@@ -1,0 +1,26 @@
+<%= content_tag :div, :id => "comment_#{comment.id}", :class => 'comment-box comment-top' do %>
+  <%= content_tag :a, :name => "comment_#{comment.id}" do %>
+    <div class="avatar">
+      <%= image_tag gravatar_url(comment.user), :size => '60x60', :alt => comment.author_label %>
+    </div>
+  <% end %>
+  <div class="comment">
+    <p class="date"><%= comment.author_label %>, <%= time_ago_in_words(comment.created_at) %></p>
+    <div class="text"><%= simple_format(comment.comment) %></div>
+    <%= link_to '▲', vote_up_document_comment_path(@document, comment), :class => [:vote_up, :norm] %>
+    <span class="current_votes"><%= comment.votes %></span>
+    <%= link_to '▼', vote_down_document_comment_path(@document, comment), :class => :vote_down %>
+    <a href="#" class="reply comment-menu" data-reply-to="<%= comment.id %>">Odpovedať</a>
+    <% if comment.related_to_document_area? %>
+      <%= link_to 'Zobraziť anotáciu v zmluve', comment_anchor(comment), :class => 'show_in_contract comment-menu' %>
+    <% end %>
+    <% if current_user && current_user.admin? %>
+      <%= link_to 'Zmazať príspevok', document_comment_path(@document, comment), :class => 'delete comment-menu', 'data-confirm' => 'Zmazať príspevok (a všetky odpovede)?' %>
+    <% end %>
+    <%= link_to 'Trvalý odkaz', document_path(@document, :anchor => "comment_#{comment.id}"), :class => 'comment-menu' %>
+    <%= link_to 'Upozorniť na nevhodný komentár', flag_document_comment_path(@document, comment), :method => :post, :class => 'comment-menu' %>
+    <div class="messages"></div>
+  </div>
+  <div class="clear"></div>
+  <%= render :partial => 'comments/reply', :collection => comment.replies, :as => :comment %>
+<% end %>

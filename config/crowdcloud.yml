@@ -1,0 +1,17 @@
+defaults: &defaults
+  site_name: Otvorené zmluvy
+  elasticsearch:
+    host: localhost
+    port: 9200
+
+development:
+  <<: *defaults
+  index_name: crowdcloud_development
+
+test:
+  <<: *defaults
+  index_name: crowdcloud_test
+
+production:
+  <<: *defaults
+  index_name: crowdcloud_production

@@ -1,0 +1,96 @@
+// Place all the styles related to the user controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+#user-footprints{
+    text-align: left;
+    h1{
+        padding-top: 25px;
+        padding-bottom: 15px;
+        font-size: 22px;
+    }
+    thead{
+        font-weight: bolder;
+    }
+}
+table.user-footprints{
+    width: 800px;
+    margin-bottom: 20px;
+    border-top: none;
+
+    th{
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    td.date{
+        width: 160px;
+    }
+}
+table#users {
+    width: 1000px;
+
+    th{
+        vertical-align: middle;
+        text-align: center;
+    }
+    
+    td{
+        width: 80px;
+    }
+
+    td.date{
+        width: 160px;
+    }
+}
+
+.banned{
+    color: gray;
+}
+
+.sorting_asc {
+    background: url(<%= asset_path 'datatables_sort_asc.png' %>) no-repeat center right;
+}
+
+.sorting_desc {
+    background: url(<%= asset_path 'datatables_sort_desc.png' %>) no-repeat center right;
+}
+
+.sorting {
+    background: url(<%= asset_path 'datatables_sort_both.png' %>) no-repeat center right;
+}
+
+.dataTables_length{
+    text-align: right;
+    font-size: 10px;
+}
+
+.dataTables_filter{
+    padding: 10px;
+}
+
+.dataTables_info{
+    padding: 20px;
+}
+
+.paginate_enabled_next {
+    background-image: url(<%= asset_path 'datatables_forward_enabled.jpg' %>);
+}
+
+.paginate_disabled_next {
+    background-image: url(<%= asset_path 'datatables_forward_disabled.jpg' %>);
+}
+
+.paginate_enabled_previous {
+    background-image: url(<%= asset_path 'datatables_back_enabled.jpg' %>);
+}
+
+.paginate_disabled_previous {
+    background-image: url(<%= asset_path 'datatables_back_disabled.jpg' %>);
+}
+
+.paginate_disabled_previous, .paginate_enabled_previous, .paginate_disabled_next, .paginate_enabled_next {
+    height: 19px;
+    width: 19px;
+    margin-left: 3px;
+    float: left;
+}

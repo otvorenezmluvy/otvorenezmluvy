@@ -1,0 +1,220 @@
+@import "mixins";
+
+#content p.contracts {
+  margin: 0px 0 30px 0;
+  font-size: 30px;
+  font-weight: 700
+}
+
+.top-banner {
+  height: 84px;
+  line-height: 84px;
+  display: inline-block;
+  font-size: 45px;
+  font-weight: 700;
+  margin: 0 auto 30px auto;
+  font-family: Arial, Helvetica, sans-serif;
+
+  span {
+    float: left;
+    margin-left: 2px;
+  }
+
+  span.number {
+    background: url(<%= asset_path 'number_bg.png' %>) no-repeat scroll 0 0 transparent;
+    display:block;
+    width:48px;
+  }
+
+  span.third {
+    float: left;
+    margin-right: 10px;
+  }
+}
+
+#tabs {
+  margin-top: 50px;
+  height: 36px;
+  li {
+    list-style-type: none;
+    float: left;
+    position: relative;
+    z-index: 9;
+    a {
+      width: 186px;
+      height: 36px;
+      font-size: 12px;
+      background: url(<%= asset_path 'tab_inactive_bg.png' %>) no-repeat;
+      display: block;
+      line-height: 39px;
+      &.active {
+        color: #000;
+        background: url(<%= asset_path 'recent.png' %>) no-repeat;
+        width: 186px;
+      }
+    }
+  }
+}
+
+table.contract {
+  border-top: solid 1px #e5e8ea;
+  border-collapse: collapse;
+  margin-left: 20px;
+  font-size: 12px;
+  text-align: left;
+  width: 90%;
+  margin-bottom: 6px;
+
+  td.value {
+    width: 420px;
+  }
+
+  &.first {
+    border: none;
+  }
+
+  tr {
+    height: 21px;
+    padding: 0 10px;
+  }
+
+  tr.space {
+    height: 15px;
+  }
+
+  .price {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .table-box-left {
+    width: 120px;
+    text-align: right;
+    font-size: 10px;
+    line-height: 10px;
+    padding: 0 14px 0 5px;
+  }
+
+  .comments_count {
+    background: url(<%= asset_path 'comment.png' %>) no-repeat left center;
+    padding-left: 20px;
+  }
+}
+
+.other-contracts {
+  margin-top: 10px;
+  padding-left: 20px;
+  font-size: 12px;
+  border-top: solid 1px #e5e8ea;
+  text-align: left;
+  background: #f8fafb;
+  height: 35px;
+  a {
+    display: block;
+    line-height: 35px;
+    padding-right: 12px;
+    float: left;
+    border-radius: 0 0 4px 0;
+  }
+}
+
+.dailyprice {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.graph {
+  height: 200px;
+  background: url(<%= asset_path 'graph_03.png' %>) bottom center no-repeat;
+  margin-bottom: 15px;
+}
+
+
+table.for-graph {
+  margin: 0 0 30px 40px;
+  font-size: 12px;
+  thead {
+    font-weight: 700;
+  }
+  tr {
+    height: 30px;
+    line-height: 30px;
+    border-top: solid 1px #cbd0d4
+  }
+  &, thead tr {
+    border: none !important;
+  }
+  td {
+    width: 100px;
+    &.resort {
+      padding-left: 5px;
+      width: 210px;
+    }
+  }
+}
+
+#search_panel {
+  text-align: center;
+  position: relative;
+  clear: both;
+  height: 70px;
+  font-size: 12px;
+  background-image: url(<%= asset_path 'search_panel_bg.png' %>);
+  background-repeat: no-repeat;
+  background-position: 480px center;
+
+  a {
+    position: absolute;
+    top: 28px;
+    right: 11%;
+  }
+
+  form {
+    display: inline-block;
+    height: 40px;
+    width: 480px;
+    margin: 15px 0 0;
+  }
+
+  input[type="text"] {
+    vertical-align: top;
+    margin: 0px;
+    width: 360px;
+    height: 40px;
+    line-height: 40px;
+    color: #4c4c4c;
+    padding: 0px 20px;
+    font-size: 14px;
+    @include shaded-input(#ccd2d6);
+  }
+
+  input[type="button"] {
+    line-height: 1px;
+    font-size: 0px;
+    color:#1b81d0;
+    padding: 0px;
+    margin: 1px 0 0 3px;
+    width: 60px;
+    height: 40px;
+    border: none;
+    background: url(<%= asset_path 'button_bg.png' %>);
+    &:hover {
+      background: url(<%= asset_path 'button_bg.png' %>) scroll 0 40px;
+    }
+  }
+}
+
+#tab_most_commented {
+  display: none;
+}
+
+.contracts-footer {
+  margin: 30px auto;
+}
+
+#slider {
+  li {
+    list-style-type: none;
+    padding-top: 50px;
+  }
+}

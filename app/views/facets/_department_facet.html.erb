@@ -1,0 +1,2 @@
+<p><%= text_field_tag :term, nil, :size => 25, :data => {"autocomplete-path" => quickfacet_documents_path(facet.params.merge(:facet => facet.name))} %></p>
+<%= render :partial => "factic/searchable_terms_facet", :object => facet, :as => :facet %>

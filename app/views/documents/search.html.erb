@@ -1,0 +1,128 @@
+<div id="search_panel">
+  <% facet = @results.facets[:q] %>
+  <%= render :partial => "facets/q_facet", :object => facet, :as => :facet %>
+</div>
+<div id="content">
+  <ul id="tabs">
+    <li class="active"><a href="#" class="list">Zoznam</a></li>
+  </ul>
+  <div class="top-for-bottombg">
+    <div id="top" class="glow">
+      <div class="top-left" id="facets">
+        <% if @restrictions_params.any? %>
+            <p class="reset">
+              <%= link_to search_documents_path do %>
+                  <strong><span>&#10006;</span>Zmazať všetky obmedzenia</strong>
+              <% end %>
+            </p>
+        <% end %>
+        <ul>
+          <% @visible_facet_names.each_with_index do |name, index| %>
+              <% facet = @results.facets[name] %>
+              <% next unless facet %>
+              <% visibility = @collapsed_facet_names.include?(name) ? "collapsed ":"open " %>
+              <%= content_tag :li, :class => "facet #{visibility.to_s+name.to_s} #{'first' if index == 0}" do %>
+                <%= content_tag :a, t("facets.#{name}"), :class => :title, :href => "#" %>
+                <%= render :partial => "facets/#{name}_facet", :object => facet, :as => :facet %>
+              <% end %>
+          <% end %>
+        </ul>
+      </div>
+      <div class="top-right">
+        <div class="select-panel">
+          <% statistics = @results.facets[:total_amount_stats] %>
+          <% unless @heuristic.new_record? %>
+            <div class="heuristic">
+              Kategória: <em><%= @heuristic.name %></em>
+            </div>
+          <% end %>
+          <p>Spolu <span class="strong"><%= number_to_euro(statistics.total) %></span>
+            v <strong><%= t(:in_n_contracts, :count => number_with_delimiter(@results.hits.total)) %></strong>.</p>
+
+          <div class="select-right">
+            <div class="select-right-left">Zoradiť podľa
+              <%= form_tag search_documents_path, :method => :get, :class => "jqtransform" do %>
+                  <% @results.search_params.each_pair do |name, value| %>
+                      <% unless ["controller", "action", "sort", "sort_order", "utf8"].include? name %>
+                          <%= hidden_field_tag name, value %>
+                      <% end %>
+                  <% end %>
+                  <p><%= select_tag :sort, options_for_select(@sort_fields, @results.search_params[:sort]), :class => :sort %></p>
+              <% end %>
+            </div>
+            <% if params[:sort_order] == "desc" %>
+                <div class="nav"><a href="#" class="next active"></a> <a href="#" class="prew"></a></div>
+            <% else %>
+                <div class="nav"><a href="#" class="next"></a> <a href="#" class="prew active"></a></div>
+            <% end %>
+
+          </div>
+          <div class="clear"></div>
+          <% if can? :read, Heuristic %>
+              <p><%= link_to @heuristic.new_record? ? "Vytvoriť heuristiku" : "Upraviť heuristiku", "#", 'data-toggle-id' => :heuristic_form, 'data-focus-id' => :heuristic_name %></p>
+          <% end %>
+          <div style="display: none" id="heuristic_form">
+            <%= form_for @heuristic do |f| %>
+                <%= f.hidden_field :serialized_search_parameters %>
+                <p><%= f.label :name, "Názov heuristiky" %>:<br><%= f.text_field :name %></p>
+
+                <p><%= f.label :formula, "Počet bodov" %>:<br><%= f.text_field :formula, :size => 4 %></p>
+
+                <p><%= f.label :explanation, "Vysvetlenie" %>:<br> <%= f.text_area :explanation, :rows => 5 %></p>
+
+                <p><%= f.submit @heuristic.new_record? ? "Vytvoriť heuristiku" : "Upraviť heuristiku" %>
+                  <% if @heuristic.persisted? %>
+                      alebo <%= link_to "Zmazať heuristiku", @heuristic, :method => :delete, :confirm => "Chcete naozaj zmazať túto heuristiku?" %>
+                  <% end %></p>
+            <% end %>
+          </div>
+        </div>
+        <div class="clear"></div>
+            <div class="overview">
+              <ol start="<%= @results.offset %>">
+                <% @results.hits.each_with_index do |hit, index| %>
+                    <li class="<%= 'nobr' if index == @results.hits.length - 1 %>">
+                      <div class="li-left">
+                        <h2 class="title"><%= link_to hit.highlighted_name || "Dokument bez uvedeného názvu", document_path(hit, :q => @query) %></h2>
+
+                        <div class="notice">
+                          <p>
+                            <strong>Obstarávateľ:</strong> <%== hit.highlighted_customer %></p>
+                          <p>
+                            <strong>Dodávateľ:</strong> <%== hit.highlighted_supplier %></p>
+                          <p>
+                            <strong>Dátum zverejnenia:</strong> <%= l(Date.strptime(hit.published_on, "%Y-%m-%d")) %></p>
+                          <% if hit.send("matching_heuristics.name") %>
+                            <p>
+                              <strong>Zmluva spĺňa kritériá:</strong> <%= weird_heuristics_from_hit(hit).html_safe %></p>
+                          <% end %>
+                        </div>
+                      </div>
+                      <div class="li-right">
+                        <div class="price"><%= number_to_euro(hit.total_amount) || 'neznáma' %></div>
+                      </div>
+                      <div class="clear"></div>
+                      <% highlighted_pages = @pages[hit.id] %>
+                      <% if highlighted_pages %>
+                          <% highlighted_pages.each do |page| %>
+                                <% page.highlights(:text).each do |highlight| %>
+                                    <p class="found"><%== highlight %></p>
+                                <% end %>
+                          <% end %>
+                      <% end %>
+                    </li>
+                <% end %>
+              </ol>
+            </div>
+        <div class="paging-panel">
+          <div>
+            <%= @results.offset %> - <%= @results.offset + @results.hits.count - 1 %> z <%= t(:of_n_contracts, :count => number_with_delimiter(@results.hits.total)) %> (Nájdené za <%= number_with_delimiter(@results.took) %>ms)&nbsp;&nbsp;&mdash;&nbsp;&nbsp;<%= link_to 'RSS feed', search_documents_path(:rss, @results.search_params)  %>
+          </div>
+          <%= paginate @results %>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+</div>
+

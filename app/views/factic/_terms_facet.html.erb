@@ -1,0 +1,7 @@
+<ul>
+  <% terms_facet.terms.each do |item| %>
+      <%= content_tag :li, item.selected? ? {:class => :selected} : nil do %>
+        <%= link_to truncate(item.term, :length => 28), item.search_params, :title => item.term  %> (<%= item.count %>)
+      <% end %>
+  <% end %>
+</ul>

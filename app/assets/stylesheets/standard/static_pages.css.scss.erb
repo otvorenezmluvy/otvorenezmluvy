@@ -1,0 +1,89 @@
+body.static {
+  text-align: left;
+
+  #content {
+    margin-top: 20px;
+    text-align: left;
+    background-color: white !important;
+    border: 1px solid #ccd2d6;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #d5d9dc;
+    padding: 90px 150px !important;
+
+    form {
+      width: 80%;
+      margin: 0 auto;
+      margin-top: 10px;
+    }
+
+    label {
+      font-size: 16px;
+      margin: 0 10px 10px 0;
+      padding: 9px 0 0;
+      text-align: left;
+      width: 135px;
+      display: block;
+    }
+
+    textarea, input {
+      color: #3A3A3A;
+      display: block;
+      font-family: Georgia,serif;
+      font-size: 18px;
+      margin: 0 0 10px;
+      padding: 4px;
+      width: 100%;
+    }
+
+    .submit {
+      width: 200px;
+      float: right;
+    }
+
+    .page-edit {
+      display: none;
+      margin-bottom: 20px;
+    }
+
+    .show-page-instructions {
+      display: block;
+      float: right;
+    }
+
+    ul {
+      margin-top: 18px;
+      margin-left: 19px;
+      li {
+        list-style-image: url(<%= asset_path('list_bullet.png') %>);
+        margin-bottom: 10px;
+      }
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      @extend h1;
+      font-size: 20px;
+      margin-top: 27px;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      @extend h1;
+      font-size: 17px;
+      margin-top: 27px;
+      margin-bottom: 6px;
+    }
+
+    p {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      line-height: 29px;
+    }
+  }
+}

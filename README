@@ -1,0 +1,20 @@
+rake db:schema:load
+
+# add eulang analyzer to ES config/elasticsearch.yml
+index:
+  analysis:
+    analyzer:
+      eulang:
+        type: custom
+        tokenizer: standard
+        filter: [standard, lowercase, asciifolding, stop]
+
+
+# start ES - bin/elasticsearch -f
+# start redis - src/redis-server
+
+aptitude/yum install graphicsmagick
+                                1
+rake crowdcloud:index:rebuild
+rake crowdcloud:crz:download
+rake resque:work

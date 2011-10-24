@@ -1,0 +1,13 @@
+<%= form_tag search_documents_path, :method => :get do %>
+    <%= content_tag :div do %>
+      <%= text_field_tag :q, facet.query_string, :size => 35, :id=> "search", :title => "Vyhľadávajte v zmluvách", :accesskey => "s", :alt => "Vyhľadávanie v zmluvách", :size => "", :maxlength=>"", :data => {:placeholder => "Vyhľadávanie v zmluvách"} %>
+      <% facet.params.each_pair do |name, value| %>
+        <% next if name == :q %>
+        <%= hidden_field_tag name, value %>
+      <% end %>
+      <%= submit_tag 'Search', :name => nil, :class => :search, :type => :button %>
+      <% if facet.applied? %>
+        <%= link_to image_tag("x.png", :alt => "Zrušit"), facet.remove_params, :class => "x", :title => "Zrušiť ohraničenie" %>
+      <% end %>
+    <% end %>
+<% end %>

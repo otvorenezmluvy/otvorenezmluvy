@@ -1,0 +1,78 @@
+body.devise {
+  text-align: left;
+
+  form {
+    width: 500px;
+    margin: 0 auto;
+    margin-top: 100px;
+  }
+
+  label {
+    font-size: 16px;
+    margin: 0 10px 0 0;
+    padding: 9px 0 0;
+    text-align: right;
+    width: 135px;
+    float: left;
+  }
+
+  input {
+    color: #3A3A3A;
+    display: block;
+    font-family: Georgia,serif;
+    font-size: 18px;
+    margin: 0 0 10px;
+    padding: 4px;
+    width: 320px;
+  }
+
+  .indent {
+    text-align: left;
+    margin-left: 145px;
+
+    #user_remember_me {
+      margin-right: 10px;
+    }
+
+    label {
+      float: none;
+    }
+    input {
+      display: inline;
+    }
+    .submit {
+      width: 210px;
+    }
+  }
+
+  #devise_links {
+    margin-left: 128px;
+    text-align: left;
+  }
+
+  #error_explanation {
+    text-align: left;
+    margin-bottom: 20px;
+    background-color: #ff8896;
+    border: 2px solid #be1226;
+    padding: 1em;
+
+    h2 {
+      margin-bottom: 10px;
+    }
+    ul {
+      li {
+        margin-left: 25px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .captcha {
+    margin-bottom: 10px;
+  }
+
+  .tos {
+    margin-bottom: 10px;
+  }
+}

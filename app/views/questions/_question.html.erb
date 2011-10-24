@@ -1,0 +1,31 @@
+<div class="question">
+  <% choice_answers = nil %>
+  <p><%= question.text %></p>
+  <p class="vysledok" id="<%= "#{question.id}" %>">
+    <% question.question_choices.each do |choice| %>
+      <% if choice.wants_detail %>
+        <% if @user_answers[choice] %>
+          <% choice_answers = @user_answers[choice] %>
+          <a href="#" id="<%= "#{choice.id}" %>" class="choice-with-detail active"><%= choice.label %></a>
+        <% else %>
+          <a href="#" id="<%= "#{choice.id}" %>" class="choice-with-detail"><%= choice.label %></a>
+        <% end %>
+      <% else %>
+        <% if @user_answers[choice] %>
+          <a href="#" id="<%= "#{choice.id}" %>" class="choice active"><%= choice.label %></a>
+        <% else %>
+          <a href="#" id="<%= "#{choice.id}" %>" class="choice"><%= choice.label %></a>
+        <% end %>
+      <% end %>
+    <% end %>
+    <%= hidden_field_tag(:url, document_questions_path(@document), :class => "post-url") %>
+    <% if choice_answers %>
+      <%= text_area(:question_choice, :detail, :value => choice_answers.first.detail, :class => "question-choice-detail-text") %>
+      <%= button_tag("odoslať", :class => "question-choice-detail-button") %>
+    <% else %>
+      <%= text_area(:question_choice, :detail, :style => "display:none;", :class => "question-choice-detail-text") %>
+      <%= button_tag("odoslať", :style => "display:none;", :class => "question-choice-detail-button") %>
+    <% end %>
+    <div style="clear: both;"></div>
+  </p>
+</div>

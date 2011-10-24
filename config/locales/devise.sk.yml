@@ -1,0 +1,52 @@
+
+# Additional translations at http://github.com/plataformatec/devise/wiki/I18n
+
+sk:
+  errors:
+    messages:
+      expired: "expirovalo, vyžiadajte si prosím nové"
+      not_found: "sa nenašlo"
+      already_confirmed: "už bolo potvrdené, skúste sa prihlásiť"
+      not_locked: "nie je zamknutý"
+      not_saved:
+        one: "Formulár sa nepodarilo uložiť:"
+        few: "Formulár sa nepodarilo uložiť:"
+        other: "Formulár sa nepodarilo uložiť"
+
+  devise:
+    failure:
+      already_authenticated: 'Už ste prihlásený.'
+      unauthenticated: 'Je potrebné aby ste sa prihlásili.'
+      unconfirmed: 'Je potrebné potvrdiť váš účet. Skontrolujte svoj email.'
+      locked: 'Váš účet je zamknutý.'
+      invalid: 'Zadali ste zlý email alebo heslo.'
+      invalid_token: 'Neplatný autentifikačný kód.'
+      timeout: 'Boli ste automaticky odhlásený.'
+      inactive: 'Váš účet ešte nie je aktivovaný.'
+    sessions:
+      signed_in: 'Úspešne prihlásený.'
+      signed_out: 'Úspešne odhlásený.'
+    passwords:
+      send_instructions: 'O chvíľu dostanete email s inštrukciami ako zresetovať Vaše heslo.'
+      updated: 'Vaše heslo bolo zmenené. Teraz ste prihlásený.'
+    confirmations:
+      send_instructions: 'O chvíľu dostane email s inštrukciami ako potvrdiť Váš účet.'
+      confirmed: 'Účet bol potvrdený. Teraz ste prihlásený.'
+    registrations:
+      signed_up: 'Úspešne prihlásený.'
+      inactive_signed_up: 'Úspešne ste sa zaregistrovali. Nepodarilo sa Váš však prihlásiť, pretože %{reason}.'
+      updated: 'Váš účet bol úspešne upravený.'
+      destroyed: 'Váš účet bol zmazaný.'
+    unlocks:
+      send_instructions: 'O chvíľu dostanete email s inštrukciami ako odomknúť Váš účet.'
+      unlocked: 'Váš účet bol odomknutý. Teraz ste prihlásený.'
+    omniauth_callbacks:
+      success: 'Successfully authorized from %{kind} account.'
+      failure: 'Could not authorize you from %{kind} because "%{reason}".'
+    mailer:
+      confirmation_instructions:
+        subject: 'Inštrukcie pre potvrdenie účtu'
+      reset_password_instructions:
+        subject: 'Inštrukcie pre zresetovanie hesla'
+      unlock_instructions:
+        subject: 'Inštrukcie pre odomknutie účtu'

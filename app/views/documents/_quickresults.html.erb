@@ -1,0 +1,20 @@
+<div id="quickresults">
+  <% if @matching_pages %>
+    <h3>Výsledky vyhľadávania</h3>
+    <% if @matching_pages.any? %>
+      <dl class="quickresults">
+        <% @matching_pages.each_with_index do |matching_page, index| %>
+          <dd>
+            <strong><%= link_to "#{matching_page.attachment.number}/#{matching_page.number}", document_page_path(matching_page, :q => @query) + "#" + document_page_anchor(matching_page), :title => "Prejsť na stranu č.#{matching_page.number}" %></strong>
+            <% matching_page.highlights('text').each do |highlight| %>
+              <%= link_to raw(highlight), document_page_path(matching_page, :q => @query) + "#" + document_page_anchor(matching_page), :class => 'snippet' %>
+            <% end %>
+          </dd>
+        <% end %>
+      </dl>
+    <% else %>
+      <p>Výraz <em><%= @query %></em> sa v dokumente nenašiel.</p>
+    <% end %>
+  <% end %>
+  <div class="clear"></div>
+</div>

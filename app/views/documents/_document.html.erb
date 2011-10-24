@@ -1,0 +1,36 @@
+<table class='contract <%= "first" if document_counter == 0 %>'>
+  <tbody>
+    <tr class="space">
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="table-box-left">Názov</td>
+      <td class="value"><%= link_to document.name, document_path(document) %></td>
+    </tr>
+    <tr>
+      <td class="table-box-left">Obstarávateľ</td>
+      <td class="value"><%= document.customer %></td>
+    </tr>
+    <tr>
+      <td class="table-box-left">Dodávateľ</td>
+      <td class="value"><%= document.supplier %></td>
+    </tr>
+    <tr>
+      <td class="table-box-left">Cena</td>
+      <td class="value"><span class="price"><%= number_to_euro(document.total_amount) || 'neznáma' %></span></td>
+    </tr>
+    <% if document.send("matching_heuristics").any? %>
+      <tr>
+        <td class="table-box-left">Zmluva spĺňa kritériá</td>
+        <td class="value"><%= heuristics_from_hit(document).html_safe %></td>
+      </tr>
+    <% end %>
+    <% if document.comments_count > 0 %>
+      <tr>
+        <td></td>
+        <td><div class="comments_count"><%= t(:comments, :count => document.comments_count) %></div></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

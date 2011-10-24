@@ -1,0 +1,1 @@
+$("#facets .<%= @facet_name %> .list").replaceWith("<%= escape_javascript(render :partial => "factic/searchable_terms_facet", :object => @facet, :as => :facet) %>");

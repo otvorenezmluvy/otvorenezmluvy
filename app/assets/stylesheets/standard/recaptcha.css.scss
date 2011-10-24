@@ -1,0 +1,24 @@
+#comments .comment {
+  .recaptchatable a {
+    font-weigth: normal;
+    margin-right: 0;
+  }
+
+  table tr {
+    height: 0;
+  }
+
+  .recaptchatable input {
+    background: white;
+    color: inherit;
+    cursor: default;
+    font-weight: normal;
+    height: 20px;
+    text-shadow: none;
+  }
+}
+
+.recaptchatable tr {
+  height: 0;
+}
+

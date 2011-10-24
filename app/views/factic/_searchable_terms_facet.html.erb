@@ -1,0 +1,21 @@
+<div class="list">
+  <% if facet.terms.any? %>
+    <ul>
+      <% facet.terms.each do |item| %>
+        <%= content_tag :li, item.selected? ? {:class => :selected} : nil do %>
+          <% truncate_const = item.term.try(:upcase) == item.term ? 23:28 %>
+          <% if item.selected? %>
+            <%= link_to '&#10006;'.html_safe, search_documents_path(item.remove_params), :class => :remove, :title => "Zrušiť ohraničenie" %>
+            <%= content_tag :span, :title => item.term do %>
+              <%= truncate(item.term, :length => truncate_const) || "neurčený" %> (<%= item.count %>)
+            <% end %>
+          <% else %>
+            <%= link_to '&#10010;'.html_safe, search_documents_path(item.add_params), :class => :add, :title => "Pridať ohraničenie" %>
+            <%= link_to truncate(item.term, :length => truncate_const) || "neurčený", search_documents_path(item.params), :title => item.term %>
+            (<%= item.count %>)
+          <% end %>
+        <% end %>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

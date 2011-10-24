@@ -1,0 +1,22 @@
+<div id="slider">
+  <ul>
+    <li>
+      <p class="dailyprice">Evidujeme zmluvy a dodatky <br/> v hodnote <strong><%= number_to_euro(@statistics.amounts.total) %></strong> z týchto rezortov:</p>
+      <div id="pie_chart_container" class="graph"></div>
+      <table class="for-graph" >
+        <thead>
+          <tr>
+            <td class="resort">Rezort</td>
+            <td>Výdavky</td>
+          </tr>
+        </thead>
+        <% @statistics.amounts_by_department.terms.each do |department| %>
+          <tr>
+            <td class="resort" ><span class="span-resort">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;<%= link_to truncate(department.term, :length => 30), search_documents_path(:department => department.term), :title => department.term %></td>
+            <td><%= number_to_euro department.total %></td>
+          </tr>
+        <% end %>
+      </table>
+    </li>
+  </ul>
+</div>

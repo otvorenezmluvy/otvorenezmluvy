@@ -1,0 +1,240 @@
+@import "mixins";
+
+.document {
+  padding-top: 10px;
+
+  a.pencil1, a.pencil2, a.pencil3 {
+    width: 25px;
+    height: 25px;
+    background: url(<%= asset_path 'pencil.png' %>) no-repeat 0 0;
+  }
+
+  a.pencil2 {
+    background-position: 0 -30px;
+  }
+
+  a.pencil3 {
+    background-position: 0 -60px;
+  }
+
+  .comment_area {
+    border: 1px solid #e4e410;
+    background-color: transparent;
+    background-color: rgba(247, 254, 46, 0.5);  /* FF3+, Saf3+, Opera 10.10+, Chrome, IE9 */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7FF7FE2E,endColorstr=#7FF7FE2E); /* IE6–IE9 */
+            zoom: 1;
+  }
+
+  .reverse_note_box .up_box {
+    .up_box_top {
+      background: url(<%= asset_path 'up-box-top-r.png' %>) no-repeat center top;
+    }
+    .up_box_bottom {
+      background: url(<%= asset_path 'up-box-bottom-r.png' %>) no-repeat center top;
+    }
+  }
+
+  .up_box {
+    width: 590px;
+    cursor: default;
+
+    .up_box_top {
+      background: url(<%= asset_path 'up-box-top.png' %>) no-repeat center top;
+      height: 24px;
+    }
+    .up_box_bottom {
+      background: url(<%= asset_path 'up-box-bottom.png' %>) no-repeat center top;
+      height: 24px;
+    }
+    .up_box_center {
+      background: url(<%= asset_path 'up-box-center.png' %>) no-repeat center bottom;
+      padding: 15px 38px 10px 40px;
+    }
+
+    p.user {
+      padding-left: 80px;
+      margin-bottom: 20px;
+      font-size: 100%;
+    }
+
+    label {
+      line-height: 38px;
+      display: block;
+      float: left;
+      height: 38px;
+      margin-bottom: 10px;
+      clear: left;
+      width: 70px;
+    }
+
+    textarea {
+      margin-bottom: 10px;
+      padding: 10px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      line-height: 16px;
+      height: 60px;
+      width: 410px;
+      margin-left: 10px;
+      @include shaded-input;
+    }
+    div.buttons2 {
+      height: 36px;
+      float: none;
+    }
+
+    a.cancel {
+      float: right;
+      margin-left: 18px;
+      line-height: 36px;
+      height: 36px;
+    }
+
+    .submit {
+      display: block;
+      float: right;
+      line-height: 36px;
+      height: 36px;
+      margin-left: 18px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #FFF;
+      background: url(<%= asset_path 'up-box-button.png' %>);
+      text-align: center;
+      width: 147px;
+      border: 0;
+      cursor: pointer;
+      text-shadow: 0px 1px 0px #3780b0;
+      filter: dropshadow(color=#3780b0, offx=0, offy=1);
+    }
+  }
+
+  .note_box {
+    font-size: 12px;
+    p {
+      margin-bottom: 4px;
+      &.author {
+        color: #6c6f73;
+        margin-bottom: 0;
+      }
+    }
+    a {
+      font-weight: bold;
+      &.show_replies {
+        border-left: 1px solid #ccd2d6;
+        margin-left: 10px;
+        padding-left: 10px;
+      }
+    }
+  }
+
+  .page {
+    line-height: 19px;
+    font-size: 13px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
+  .buttons {
+    clear: both;
+    height: 26px;
+    float: left;
+    a {
+      line-height: 26px;
+      text-indent: 30px;
+      display: block;
+      height: 26px;
+      background-repeat: repeat;
+      background-position: left top;
+      font-size: 12px;
+      color: #6c6f73;
+      text-decoration: none;
+      float: left;
+      text-shadow: 0px 1px 0px #ffffff;
+      filter: dropshadow(color = white, offx = 0, offy = 1);
+
+      &.selected {
+        color: #FFF;
+        text-shadow: 0px 1px 0px #70767c;
+        filter: dropshadow(color = #70767c, offx = 0, offy = 1);
+        background-position: center bottom;
+      }
+      &.add_note.selected {
+        color: #FF0;
+      }
+
+      &.scan {
+        background-image: url(<%= asset_path "scan.png" %>);
+        width: 70px;
+      }
+      &.fulltext {
+        background-image: url(<%= asset_path "fulltext.png" %>);
+        width: 80px;
+        margin-right: 20px;
+      }
+      &.add_note {
+        background-image: url(<%= asset_path "add_note.png" %>);
+        width: 117px;
+        text-indent: 0px;
+        text-align: center;
+      }
+    }
+  }
+
+  .pages {
+    float: right;
+    margin-bottom: 10px;
+    padding-right: 37px;
+
+    span {
+      font-weight: normal;
+    }
+
+    a, input, span {
+      line-height: 26px;
+      background-repeat: repeat;
+      background-position: left top;
+      display: block;
+      height: 26px;
+      margin-right: 7px;
+      float: left;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      color: #6c6f73;
+      text-align: center;
+      padding: 0px;
+    }
+    a {
+      text-indent: -10000px;
+      width: 30px;
+      &.up {
+        background-image: url(<%= asset_path "up.png" %>);
+        &:hover {
+          background: url(<%= asset_path "up.png" %>) scroll 0 26px;
+        }
+      }
+      &.down {
+        background-image: url(<%= asset_path "down.png" %>);
+        &:hover {
+          background: url(<%= asset_path "down.png" %>) scroll 0 26px;
+        }
+      }
+    }
+
+    input {
+      @include shaded-input;
+      width: 23px;
+    }
+  }
+
+  .doc {
+    border: 1px solid #eef2f6;
+    clear: both;
+    margin-bottom: 10px;
+    position: relative;
+    width: 673px;
+  }
+}

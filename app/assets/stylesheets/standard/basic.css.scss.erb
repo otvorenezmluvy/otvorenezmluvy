@@ -1,0 +1,51 @@
+@import "mixins";
+
+body {
+  background: url(<%= asset_path 'body_bg.png' %>) top repeat-x #dde1e4;
+  width: 100%;
+  font-family: "Arial";
+}
+
+a {
+  color: #288ecb;
+  outline: none;
+  &:link, &:visited {
+    color: #288ecb;
+    text-decoration: none;
+  }
+  &:hover, &:active {
+    text-decoration: underline;
+  }
+}
+
+input[type="button"] {
+  cursor: pointer;
+}
+
+.clear {
+  clear: both;
+}
+
+.strong {
+  font-weight: 700;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+h4.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 20px 0 15px 20px;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.heuristic_label {
+  background: #eef2f6;
+  padding: 2px 5px;
+  @include border-radius(3px);
+}

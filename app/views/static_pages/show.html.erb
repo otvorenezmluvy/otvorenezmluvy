@@ -1,0 +1,31 @@
+<div style="clear: both;"></div>
+<div id="content">
+  <% if can? :edit, @page %>
+    <div class="page-edit">
+      <%= form_for @page, :url => static_page_path(@page.slug) do |f| %>
+        <% if @page.errors.any? %>
+          <ul class="errors">
+            <% @page.errors.full_messages.each do |error| %>
+              <li><%= error %></li>
+            <% end %>
+          </ul>
+        <% end %>
+        <p>
+          <%= f.label :title %>
+          <%= f.text_field :title %>
+        </p>
+        <p>
+          <%= f.label :content %>
+          <%= f.text_area :content %>
+        </p>
+        <p>
+          Použite <a href="http://daringfireball.net/projects/markdown/syntax" target="blank">Markdown</a>
+          <%= f.submit 'Uložiť', :class => :submit %>
+        </p>
+      <% end %>
+    </div>
+    <a class="show-page-instructions" href="#">Upraviť stránku</a>
+  <% end %>
+
+  <%== @markdown.to_html if @markdown %>
+</div>

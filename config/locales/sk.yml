@@ -1,0 +1,108 @@
+sk:
+  unauthorized:
+    manage:
+      all: "Not authorized to %{action} %{subject}."
+    read:
+      heuristic: "Nemáte oprávnenie prezerať existujúce heuristiky."
+  facets:
+    department: Rezort
+    customer: Objednávateľ
+    supplier: Dodávateľ
+    published_on: Dátum zverejnenia
+    expires_on: Dátum platnosti
+    legal_form: Právna forma
+    ownership_category: Druh vlastníctva
+    q: ''
+    total_amount: Celková suma
+    supplier_age: Vek dodávateľa
+    supplier_nace: Kategória dodávateľa
+    total_pages_count: Počet strán
+    comments_count: Počet komentárov
+    attachments_count: Počet príloh
+    appendixes_count: Počet dodatkov
+    points: Papričky?
+    source: Zdroj
+  matches:
+    zero: Nenašli sme žiadny výskyt spojenia "%{query}"
+    one: Našli sme jeden výskyt spojenia "%{query}"
+    few: Našli sme %{count} výskyty spojenia "%{query}"
+    other: Našli sme %{count} výskytov spojenia "%{query}"
+  in_n_contracts:
+    one: 1 zmluve
+    few: %{count} zmluvách
+    other: %{count} zmluvách
+  of_n_contracts:
+    one: 1 zmluvy
+    few: %{count} zmlúv
+    other: %{count} zmlúv
+  days:
+    one: 1 deň
+    few: %{count} dni
+    other: %{count} dní
+  months:
+    one: 1 mesiac
+    few: %{count} mesiace
+    other: %{count} mesiacov
+  years:
+    one: 1 rok
+    few: %{count} roky
+    other: %{count} rokov
+  attachments:
+    one: 1 príloha
+    few: %{count} prílohy
+    other: %{count} príloh
+  appendixes:
+    zero: bez dodatkov
+    one: 1 dodatok
+    few: %{count} dodatky
+    other: %{count} dodatkov
+  pages:
+    one: 1 strana
+    few: %{count} strany
+    other: %{count} strán
+  comments:
+    zero: žiadny komentár
+    one: 1 komentár
+    few: %{count} komentáre
+    other: %{count} komentárov
+  points:
+    zero: žiadne papričky
+    one: 1 paprička
+    few: %{count} papričky
+    other: %{count} papričiek
+  views:
+    pagination:
+      last: posledná strana
+      first: prvá strana
+      next: "&raquo;"
+      previous: "&laquo;"
+      truncate: "&hellip;"
+  date:
+    unknown: "nezistený"
+  activerecord:
+    attributes:
+      static_page:
+        slug: URL adresa
+        content: Obsah
+        title: Nadpis
+    errors:
+      models:
+        comment:
+          attributes:
+            comment:
+              blank: Nevyplnili ste komentár
+        user:
+          attributes:
+            email:
+              taken: Používateľ s takýmto emailom už existuje
+            name:
+              blank: Nevyplnili ste meno
+            password:
+              blank: Nevyplnili ste heslo
+              confirmation: Zadané heslá sa nezhodujú
+            terms_of_service:
+              accepted: Nepotvrdili ste podmienky používania
+
+  recaptcha:
+    errors:
+      verification_failed: Captcha sa nezhoduje, skúste znova

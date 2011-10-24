@@ -1,0 +1,28 @@
+<ul>
+  <% histogram_facet.entries.each do |entry| %>
+      <%= content_tag :li, entry.selected? ? {:class => :selected} : nil do %>
+          <%= link_to "#{number_to_euro(entry.key.begin)} až #{number_to_euro(entry.key.end)}".html_safe, entry.search_params %>
+          (<%= entry.count %>)
+      <% end %>
+  <% end %>
+</ul>
+
+<%=
+    content_tag :div, nil, :class => 'range-slider', :data => {
+            :from => histogram_facet.from.to_i,
+            :to => histogram_facet.to.to_i,
+            :minimum => histogram_facet.minimum.to_i,
+            :maximum => histogram_facet.maximum.to_i,
+            'from-field' => :from,
+            'to-field' => :to
+    }
+%>
+
+<%= form_tag search_documents_path, :method => :get do %>
+    <% @results.search_params.each_pair do |name, value| %>
+        <% next if name.to_s.starts_with?("total_amount") %>
+        <%= hidden_field_tag name, value %>
+    <% end %>
+    <p>Od <%= text_field_tag :total_amount_from, histogram_facet.from, :size => 5, :id => :from %>&euro;
+      do <%= text_field_tag :total_amount_to, histogram_facet.to, :size => 5, :id => :to %>&euro; <%= submit_tag "Hĺadaj", :name => nil %></p>
+<% end %>

@@ -1,0 +1,2 @@
+module HeuristicsHelper
+end

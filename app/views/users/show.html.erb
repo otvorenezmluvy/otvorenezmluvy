@@ -1,0 +1,32 @@
+<div class="content glow">
+  <h1>Moja aktivita</h1>
+  <div class="spacer"></div>
+  <div class="activity">
+    <div class="commented">
+      <h2>Naposledy komentované</h2>
+      <table id="recent-comments">
+        <% @recent_comments.each do |comment| %>
+            <tr>
+              <td class="date"><%= l comment.created_at, :format => :short %></td>
+              <td>
+                <%= link_to comment.document.name, document_path(comment.document, :anchor=> "comments") %>
+                <p><%= comment.comment %></p>
+              </td>
+            </tr>
+        <% end %>
+      </table>
+    </div>
+    <div class="answered">
+      <h2>Naposledy odpovedané</h2>
+      <table id="recent-questions">
+        <% @recent_question_answers.each do |question_answer| %>
+            <tr>
+              <td class="date"><%= l question_answer.created_at, :format => :short %></td>
+              <td><%= link_to question_answer.document.name, document_path(question_answer.document) %></td>
+            </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>

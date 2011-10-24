@@ -1,0 +1,29 @@
+<div id="content">
+  <div class="top-navigation">
+    <p><%= link_to "Späť na vyhľadávanie", search_documents_path %></p>
+  </div>
+
+
+<table id="heuristics" class="admin_table">
+  <thead>
+  <tr>
+    <th>Názov heuristiky</th>
+    <th>Vysvetlenie</th>
+    <th>Počet bodov</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @heuristics.each do |heuristic| %>
+      <tr>
+        <td class="name"><%= link_to heuristic.name, search_documents_path(heuristic.search_parameters) %></td>
+        <td class="explanation"><%= heuristic.explanation %></td>
+        <td class="points"><%= heuristic.points %></td>
+        <td class="cross"><%= link_to "&#10006;".html_safe, heuristic, :method => :delete, :title => "Zmazať heuristiku", :confirm => "Chcete naozaj zmazať túto heuristiku?" %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= paginate @heuristics %>
+</div>

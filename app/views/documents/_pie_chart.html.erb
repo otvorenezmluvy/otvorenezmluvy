@@ -1,0 +1,67 @@
+<script>
+  var chart;
+  $(document).ready(function() {
+    var options = {
+      chart: {
+        renderTo: 'pie_chart_container',
+        backgroundColor: '#eef2f6',
+        plotBackgroundColor: '#eef2f6',
+        width: 360,
+        plotBorderWidth: null,
+        plotShadow: false,
+        spacingTop: 0,
+        spacingBottom: 0,
+        spacingLeft: 0,
+        spacingRight: 0,
+        style: {
+          marginLeft: '5px'
+        },
+        events: {
+          load: function(event) {
+            $.each(this.series[0].data, function() {
+              var data_entry = this
+              $("td[class=resort] a[title=\""+data_entry.name+"\"]").each(function(index) {
+                $(this).siblings('span').attr("style", "font-size:8px;background-color:" + data_entry.color)
+              });
+            });
+          }
+        }
+
+      },
+      credits: {
+        enabled: false
+      },
+      title: {
+        text: null
+      },
+      tooltip: {
+        formatter: function() {
+          return '<b>' + this.point.name +'</b>: ' + this.percentage + ' %';
+        }
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: false
+          },
+          showInLegend: false
+        }
+      },
+      series: [{
+        type: 'pie',
+        name: 'Ministerstvá',
+        data: []
+      }]
+    }
+
+    <% total = @statistics.amounts_by_department.terms.inject(0) do |sum, n| %>
+      <% sum + (n.total.to_i) %>
+    <% end %>
+    <% @statistics.amounts_by_department.terms.each do |department| %>
+      options.series[0].data.push(["<%= department.term %>" , <%= department.total.to_i * 100/(total) %>]);
+    <% end %>
+    chart = new Highcharts.Chart(options);
+  });
+</script>

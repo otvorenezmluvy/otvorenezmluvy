@@ -1,0 +1,26 @@
+<%= form_tag search_documents_path, :method => :get do %>
+    <% facet.params.each_pair do |key, value| %>
+        <%= hidden_field_tag key, value unless ['total_amount_from', 'total_amount_to', 'total_amount'].include?(key.to_s) %>
+    <% end %>
+    <p>
+      <%= label_tag(:total_amount_from, "Od") %> <%= text_field_tag :total_amount_from, params[:total_amount_from], :size => 7 %>
+    </p>
+    <p>
+      <%= label_tag(:total_amount_to, "Do") %> <%= text_field_tag :total_amount_to, params[:total_amount_to], :size => 7 %>
+      <%= submit_tag "", :title => "Hľadať", :name => nil, :class => 'search' %>
+    </p>
+<% end %>
+
+<ul class="list">
+  <% facet.ranges.each do |range| %>
+      <%= content_tag :li, range.selected? ? {:class => :selected} : nil do %>
+          <% if range.selected? %>
+              <%= link_to '&#10006;'.html_safe, range.remove_params, :class => :remove, :title => "Zrušiť ohraničenie" %>
+              <% if range.missing? %><%= link_to "neuvedená", range.params %><% else %><%= range_to_euro(range.range) %><% end %> (<%= range.count %>)
+          <% else %>
+              <%= link_to '&#10010;'.html_safe, range.add_params, :class => :add, :title => "Pridať ohraničenie" %>
+              <% if range.missing? %><%= link_to "neuvedená", range.params %><% else %><%= link_to range_to_euro(range.range), range.params %><% end %> (<%= range.count %>)
+          <% end %>
+      <% end %>
+  <% end %>
+</ul>

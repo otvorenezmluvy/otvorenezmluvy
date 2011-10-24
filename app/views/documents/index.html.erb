@@ -1,0 +1,55 @@
+<%= render 'pie_chart' %>
+<div id="search_panel">
+  <%= render :partial => "facets/q_facet", :object => @query_facet, :as => :facet %>
+  <%= link_to "Rozšírené vyhľadávanie", search_documents_path %>
+</div>
+<div id="content">
+  <p class="contracts">Za posledný týždeň pribudli zmluvy v hodnote</p>
+  <div class="top-banner">
+    <% offset = @statistics.amounts_from_last_week.total.to_i.to_s.length % 3 %>
+    <% @statistics.amounts_from_last_week.total.to_i.to_s.chars.each_with_index do |digit, index| %>
+        <% if (index+1+3-offset) % 3 == 0 %>
+            <span class="number third"><%= digit %></span>
+        <% else %>
+            <span class="number"><%= digit %></span>
+        <% end %>
+    <% end %>
+    <span>&nbsp;€</span>
+    </div>
+  <p>Pomôžte nám ich ohodnotiť.</p>
+
+  <div class="clear"></div>
+
+  <ul id="tabs">
+    <li>
+       <%= link_to "Najnovšie zmluvy", "#", :class => "active", 'data-tab-switch' => 'tab_most_recent' %>
+    </li>
+    <li>
+       <%= link_to "Najdiskutovanejšie zmluvy", "#", 'data-tab-switch' => 'tab_most_commented' %>
+    </li>
+  </ul>
+  <div id="top-index" class="glow">
+    <div class="top-left-index">
+      <div id="tab_most_recent" class="tab">
+        <%= render :partial => 'document', :collection => @most_recent.hits %>
+        <div class="other-contracts">
+          <%= link_to "Ukáž ďalšie zmluvy &darr;".html_safe, search_documents_path(:sort => :published_on) %>
+        </div>
+      </div>
+      <div id="tab_most_commented" class="tab">
+        <%= render :partial => 'document', :collection => @most_commented.hits %>
+        <div class="other-contracts">
+          <%= link_to "Ukáž ďalšie zmluvy &darr;".html_safe, search_documents_path(:sort => :comments_count) %>
+        </div>
+      </div>
+    </div>
+    <div class="top-right-index">
+      <%= render :partial => 'slider' %>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+  <div class="contracts-footer">
+    Máme pre vás <strong><%= number_with_delimiter(@statistics.all.count) %></strong> zmlúv v hodnote <strong><%= number_to_euro(@statistics.amounts.total) %></strong>, a stále pribúdajú&hellip;
+  </div>
+</div>

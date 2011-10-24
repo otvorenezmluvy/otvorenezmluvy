@@ -1,0 +1,3 @@
+$(".module-quickresults").show();
+$(".results-summary").html('<%= t(:matches, :count => @matching_pages.hits.total, :query => @query) %>');
+$("#quickresults").replaceWith("<%= escape_javascript(render :partial => 'quickresults') %>");

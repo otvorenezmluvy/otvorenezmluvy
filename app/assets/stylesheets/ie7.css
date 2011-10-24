@@ -1,0 +1,92 @@
+@charset "UTF-8";
+/* CSS Document */
+
+.top-banner {
+	text-align: center;
+	padding-left: 120px;
+}
+.top-banner .contacts span {
+	font-family: Arial, Helvetica, sans-serif;
+}
+#search_panel {
+	top: 10px;
+}
+body.detail #content {
+	padding-top: 0px;
+}
+body.detail #search_panel {
+	position: absolute;
+	top: 35px;
+}
+body.detail #top .top-right {
+	width: 700px;
+}
+#tabs {
+}
+body.detail .top-for-bottombg,
+body.detail .top-for-topbg {
+	padding-top: 0px;	
+}
+body.detail #top {
+	padding-top: 4px;	
+	padding-bottom: 4px;
+}
+body.detail #top .top-right .li-left {
+	float: none;
+	width: 520px;
+}
+body.detail #top .top-right .li-right {
+	width: 110px;
+	position: absolute;
+	top: 10px;
+	right: 0px;
+}
+body.detail #top ol li {
+	position: relative;
+}
+body.detail #top .top-right {
+	padding-left: 0px;
+	margin-right: 30px;
+}
+.paging-panel div.paging {
+	position: relative;
+}
+.paging-panel div.paging .pprew,
+.paging-panel div.paging .pnext {
+	position: relative;
+	top: -7px;
+}
+table tr {
+	padding: 0px;
+}
+.contract-detail-inside table td {
+	vertical-align: top;
+}
+.contract-detail-inside table .table-box-left, .contract-detail-inside table .table-box-right {
+	margin-top: 0px;
+	margin-right: 0px;
+	float: none;
+	vertical-align: top;
+}
+.contract-detail-inside table td {
+	vertical-align: top;
+	padding-right: 20px;
+}
+.search-panel {
+	padding-left:0px;
+	position: relative;
+	margin-left: 0px;
+}
+.paging-panel {
+	height: 100px;
+}
+#content.detail2 .top-right {
+	padding-bottom: 30px;
+}
+.scan, .fulltext {
+	text-decoration: none;
+}
+.nahlad .search form .inputbox {
+	line-height: 30px;
+	padding-left: 10px;
+}

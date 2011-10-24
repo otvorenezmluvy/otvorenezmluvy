@@ -1,0 +1,129 @@
+@import "mixins";
+
+.top-left {
+  .module-quickresults {
+    display: none;
+  }
+
+  .back-to-search {
+    padding: 17px 0 13px 20px;
+    border-top: 1px solid #CDD3D9;
+    position: absolute;
+    bottom: 0;
+    width: 219px;
+  }
+
+  .module {
+    padding: 15px;
+    border-bottom: 1px solid #cdd3d9;
+    clear: both;
+
+    &.last {
+      border-bottom: 0px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    &.hodnotenie .vysledok {
+      .choice, .choice-with-detail {
+        color: #2e3237;
+        text-align: center;
+        display: block;
+        float: left;
+        line-height: 19px;
+        height: 19px;
+        margin-top: 5px;
+        margin-right: 5px;
+        padding-right: 10px;
+        padding-left: 10px;
+        font-size: 12px;
+        border: 1px solid #ccd2d6;
+        border-radius: 5px;
+        @include linear-gradient(#fff, #eee);
+
+
+        &:hover, &.active {
+          @include linear-gradient(#555c62, #788086);
+          border: 1px solid #ccd2d6;
+          color: white;
+          text-decoration: none;
+        }
+      }
+
+      textarea {
+        float: left;
+        width: 200px;
+        height: 120px;
+        margin-top: 10px;
+        margin-bottom: 4px;
+        resize: auto;
+      }
+
+      button {
+        float: right;
+        margin-top: 4px;
+        margin-bottom: 20px;
+        resize: auto;
+      }
+    }
+
+    .question{
+      margin-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    #progressbar-wrapper{
+      clear: both;
+      margin-top: 20px;
+      margin-bottom: 50px;
+    }
+
+    #progressbar {
+      margin-top: 5px;
+    }
+
+    #hidden-questions {
+      display: none;
+    }
+
+    .show-more {
+      display: block;
+      padding-top: 10px;
+    }
+
+    .quickresults {
+      dt {
+        float: left;
+        width: 20px;
+        font-size: 12px;
+        color: #288ecb;
+        line-height: 18px;
+        clear: both;
+      }
+
+      dd {
+        font-size: 12px;
+        line-height: 18px;
+        margin-bottom: 5px;
+        clear: both;
+
+        a.snippet {
+          color: black;
+          float: right;
+          display: block;
+          width: 183px;
+        }
+      }
+
+      em {
+        color: #000;
+        background: #ff0;
+        padding: 0px 3px;
+      }
+    }
+  }
+}

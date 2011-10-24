@@ -1,0 +1,123 @@
+@import "mixins";
+
+#comments {
+  font-size: 12px;
+  border: solid 1px #ccc;
+  border-radius: 4px;
+  box-shadow: 0 0 5px #ccc;
+  background: white;
+
+  .avatar {
+    width: 60px;
+    float: left;
+    padding: 0 20px 20px 20px;
+
+    img {
+      border: 1px solid #e2e5e8;
+    }
+  }
+
+  .comment-box {
+    &:first-child {
+      padding-top: 20px;
+    }
+  }
+
+  .comment {
+    line-height: 1.5em;
+    float: right;
+    width: 867px;
+    padding: 0 20px 10px 0;
+
+    .text p {
+      padding-top: 0;
+      padding-bottom: 1em;
+
+      &:last-child {
+        padding-bottom: 0;
+      }
+    }
+
+    .date {
+      color: #888;
+    }
+
+    .title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    a {
+      font-weight: 700;
+
+      &.norm {
+        margin-right: 0;
+        font-weight: 700;
+      }
+    }
+
+    .comment-menu {
+      border-left: 1px solid #ccd2d6;
+      margin-left: 10px;
+      padding-left: 10px;
+    }
+
+    .show_in_contract {
+      background: url(<%= asset_path 'pencil.png' %>) no-repeat 4px center;
+      padding: 5px 0 5px 35px;
+    }
+  }
+
+  .messages {
+    font-weight: bold;
+  }
+
+  .subcomment {
+    margin-left: 80px;
+
+    .comment {
+      width: 788px;
+    }
+  }
+
+  .new-comment {
+    border-top: solid 1px #ccc;
+    padding-top: 20px;
+    background: #eef2f6;
+    border-radius: 4px;
+
+    textarea {
+      overflow: hidden;
+      padding: 8px;
+      width: 837px;
+      height: 45px;
+      @include shaded-input;
+    }
+
+    input {
+      margin-top: 10px;
+      text-align: center;
+      border-style: none;
+      width: 153px;
+      height: 41px;
+      line-height: 41px;
+      background: url(<%= asset_path 'buttonblbg.png' %>) no-repeat;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+      text-shadow: 0px 1px 0px #3a79a3;
+      filter: dropshadow(color=#3a79a3, offx=0, offy=1);
+    }
+  }
+}
+
+.ajax-loader {
+  background: url(<%= asset_path 'ajax-loader.gif' %>) transparent left center;
+  width: 32px;
+  height: 32px;
+  float: right;
+  margin-top: 10px;
+  margin-right: 20px;
+  display: none;
+}

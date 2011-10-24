@@ -1,0 +1,13 @@
+<ul class="list">
+  <% facet.ranges.each do |range| %>
+      <%= content_tag :li, range.selected? ? {:class => :selected} : nil do %>
+          <% if range.selected? %>
+              <%= link_to '&#10006;'.html_safe, range.remove_params, :class => :remove, :title => "Zrušiť ohraničenie" %>
+              <% if range.missing? %><%= link_to unknown %><% else %><%=  human_numeric_range(range.range, translator) %><% end %> (<%= range.count %>)
+          <% else %>
+              <%= link_to '&#10010;'.html_safe, range.add_params, :class => :add, :title => "Pridať ohraničenie" %>
+              <% if range.missing? %><%= link_to unknown, range.params %><% else %><%= link_to  human_numeric_range(range.range, translator), range.params %><% end %> (<%= range.count %>)
+          <% end %>
+      <% end %>
+  <% end %>
+</ul>

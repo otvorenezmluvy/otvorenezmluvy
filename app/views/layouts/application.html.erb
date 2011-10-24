@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= @title.try(:+, ' | ') %><%= Configuration.site_name %></title>
+  <%= stylesheet_link_tag "application" %>
+  <%= stylesheet_link_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" %>
+  <!--[if IE 7]>
+    <%= stylesheet_link_tag "ie7.css" %>
+  <![endif]-->
+
+  <%== hoptoad_javascript_notifier %>
+
+  <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js" %>
+  <%= javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" %>
+
+  <%= javascript_include_tag "http://platform.twitter.com/widgets.js" %>
+  <script type="text/javascript">
+      window.___gcfg = {lang: 'sk'};
+
+      (function() {
+          var po = document.createElement('script');
+          po.type = 'text/javascript';
+          po.async = true;
+          po.src = 'https://apis.google.com/js/plusone.js';
+          var s = document.getElementsByTagName('script')[0];
+          s.parentNode.insertBefore(po, s);
+      })();
+  </script>
+  <%= javascript_include_tag "application" %>
+
+  <%= csrf_meta_tags %>
+
+  <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-26274643-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+  </script>
+   <%= yield :head %>
+</head>
+
+<body <%= body_class %>>
+  <div id="wrapper">
+    <% flash.each do |key, msg| %>
+      <%= content_tag :div, msg, :class => [key, " message"], :id => "notice_#{key}" %>
+      <%= content_tag :script, :type => "text/javascript" do -%>
+        setTimeout(function(){
+        $("<%="#notice_#{key}"%>").fadeOut('fast');
+        }, 3000);
+      <% end %>
+    <% end %>
+    <div id="header">
+      <div id="logo">
+        <h1><%= link_to(Configuration.site_name, root_path, :title => Configuration.site_name) -%></h1>
+      </div>
+      <ul class="menu">
+        <% if current_user.try(:admin?) %>
+            <li><%= link_to "Zoznam heuristík", heuristics_path %></li>
+            <li><%= link_to "Zoznam používateľov", users_path %></li>
+            <li><%= link_to "Nastavovanie parametrov", spaceship_settings_path %></li>
+        <% else %>
+          <li><%= link_to("FAQ", static_page_path('faq')) %></li>
+          <li><%= link_to("Podmienky používania", static_page_path('podmienky-pouzivania')) %></li>
+          <li><%= link_to("Kódex diskutujúceho", static_page_path('kodex-diskutujuceho')) %></li>
+          <li><a href="#" class="toggle" data-toggle="rss-toolbar" title="RSS">RSS</a></li>
+          <li><%= link_to("Ako môžem pomôcť", static_page_path('ako-mozem-pomoct')) %></li>
+        <% end %>
+        <% unless current_user %>
+        <li class="nobr">
+          <%= link_to("Prihláste sa", new_user_session_path) -%>
+          <span>&nbsp;alebo sa&nbsp;</span>
+        </li>
+        <li class="nobr nopd">
+          <%= link_to("Registrujte", new_user_registration_path) -%>
+        </li>
+        <% else %>
+        <li class="nobr logged-user">
+          <%= link_to current_user.label, user_path(current_user) -%>
+          <span>&nbsp;</span>
+        </li>
+        <li class="nobr nopd">
+          <%= link_to("Odhláste sa", destroy_user_session_path) -%>
+        </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div id="rss-toolbar">
+      <ul class="menu">
+        <li><%= link_to_newest_rss 'Najnovšie' %></li>
+        <li class="nobr"><%= link_to_most_discussed_rss 'Najkomentovanejšie' %></li>
+      </ul>
+    </div>
+
+    <%= yield %>
+  </div>
+
+  <div id="footer-wrapper">
+    <div id="footer">
+      <p class="copyright">
+        Copyright &copy; 2011</p>
+      <ul id="footer-menu">
+        <li>
+          <%= link_to("Ako môžem pomôcť", static_page_path('ako-mozem-pomoct')) %></li>
+        <li>
+          <%= link_to("FAQ", static_page_path('faq')) %></li>
+        <li>
+          <%= link_to("O projekte", static_page_path('o-projekte')) %></li>
+        <li>
+          <%= link_to("Podmienky používania", static_page_path('podmienky-pouzivania')) %></li>
+        <li>
+          <%= link_to("Kódex diskutujúceho", static_page_path('kodex-diskutujuceho')) %></li>
+        <li>
+          <%= link_to("Kontakt", static_page_path('kontakt')) %></li>
+        <li class="nobr">
+          <%= link_to("Autorské práva", static_page_path('autorske-prava')) %></li>
+      </ul>
+      <div class="clear"></div>
+    </div>
+  </div>
+</body>
+</html>

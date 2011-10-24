@@ -1,0 +1,177 @@
+@import "mixins";
+
+.nahlad {
+  .detail-zmluvy {
+    background-color: #FFF;
+    border: 1px solid #ccd2d6;
+    padding: 20px;
+    clear: both;
+    border-radius: 0 4px 0 0;
+
+    table {
+      margin: 0px;
+      float: left;
+      border-top-width: 0px;
+      font-size: 14px;
+      border-right: 1px solid #ccd2d6;
+      width: 790px;
+      text-align: left;
+
+      td {
+        padding: 5px 15px 5px 0;
+
+        &.table-box-left {
+          font-size: 13px;
+          color: #868d93;
+          float: none;
+          text-align: right;
+          width: 155px;
+
+          .label {
+            padding-bottom: 1px;
+          }
+        }
+      }
+
+      .name, .price {
+        font-size: 18px;
+        color: #2e3237;
+        font-weight: bold;
+      }
+    }
+    .soc-siete {
+      text-align: left;
+      float: right;
+      width: 140px;
+      padding-top: 10px;
+
+      .diskutovat {
+        a {
+          font-size: 12px;
+          line-height: 26px;
+          color: #333;
+          background: url(<%= asset_path "diskutovat-button.png" %>) no-repeat center center;
+          text-indent: 25px;
+          display: block;
+          height: 26px;
+          width: 100px;
+          text-decoration: none;
+          float: left;
+          margin: 0 4px 10px 0;
+        }
+        div {
+          font-size: 12px;
+          line-height: 18px;
+          background: url(<%= asset_path "diskutovat-bublina.png" %>) no-repeat right 4px;
+          float: left;
+          padding: 4px 5px 0 10px;
+          position: relative;
+
+          span {
+            line-height: 18px;
+            background: url(<%= asset_path "diskutovat-bublina.png" %>) no-repeat left center;
+            display: block;
+            width: 10px;
+            height: 18px;
+            position: absolute;
+            left: 0px;
+            top: 4px;
+          }
+        }
+      }
+    }
+
+    .share.first-button {
+      margin-bottom: 50px;
+    }
+  }
+
+  .search-separator {
+    height: 5px;
+    background: #dde1e4;
+    border-left: 1px solid #ccd2d6;
+    border-right: 1px solid #ccd2d6;
+  }
+
+  .search {
+    $search-height: 30px;
+
+    background-color: #EEF2F6;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #CCD2D6;
+    border-left: 1px solid #CCD2D6;
+    border-right: 1px solid #CCD2D6;
+    height: $search-height;
+    padding: 14px 9px 10px;
+    text-align: left;
+
+    .results-summary {
+      height: $search-height;
+      line-height: $search-height;
+      font-size: 12px;
+      margin-left: 10px;
+    }
+
+    form {
+      float: left;
+      width: 265px;
+      position: relative;
+      height: $search-height;
+
+      .inputbox {
+        @include shaded-input;
+        height: $search-height;
+        width: 215px;
+        position: absolute;
+        left: 0;
+        top: 0px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        color: #2e3237;
+        padding: 0 40px 0 10px;
+        line-height: 30px; 
+        background-color: #fff;
+
+        &.loading {
+          background: #fff url(<%= asset_path "ajax-loader-small.gif" %>) no-repeat 210px center;
+          padding: 0 65px 0 10px;
+          width: 190px;
+        }
+      }
+
+      .button {
+        background: url(<%= asset_path "search-button.png" %>) no-repeat right center;
+        height: $search-height - 10px;
+        margin-top: 6px;
+        margin-right: 10px;
+        width: 25px;
+        position: absolute;
+        top: 0px;
+        right: 0;
+        background-color: #FFF;
+        text-indent: -10000px;
+        border: 0;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+#content > .back-to-search {
+  width: 200px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background: #eef2f6;
+  border-top: 1px solid #CDD3D9;
+  border-left: 1px solid #CDD3D9;
+  border-right: 1px solid #CDD3D9;
+  border-radius: 3px 3px 0 0;
+  @include box-shadow(0, -2px, 4px, #ccc);
+  position: relative;
+  z-index: 1;
+
+  a {
+    font-size: 14px;
+  }
+}
+

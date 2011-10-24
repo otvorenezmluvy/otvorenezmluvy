@@ -1,0 +1,13 @@
+<div class="subcomment comment-top">
+  <div class="avatar"> 
+    <%= image_tag gravatar_url(comment.user), :size => '60x60', :alt => comment.author_label %>
+  </div>
+  <div class="comment">
+    <p class="date"><%= comment.author_label %>, <%= time_ago_in_words(comment.created_at) %></p>
+    <div class="text"><%= simple_format(comment.comment) %></div>
+    <% if current_user && current_user.admin? %>
+      <%= link_to 'Zmazať príspevok', document_comment_path(comment.document, comment), :class => :delete, 'data-confirm' => 'Zmazať príspevok?' %>
+    <% end %>
+  </div>
+  <div class="clear"></div>
+</div>

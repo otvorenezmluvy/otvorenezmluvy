@@ -1,0 +1,60 @@
+@import "mixins";
+
+.detail.user {
+  .content {
+    $padding: 20px;
+
+    margin-top: 30px;
+    border: 1px solid #ccd2d6;
+    @include border-radius(4px);
+    background: white;
+
+    h1 {
+      display: block;
+      width: 100%;
+      height: 58px;
+      line-height: 58px;
+      padding-left: $padding;
+    }
+
+    .spacer {
+      width: 100%;
+      background: #dde1e4;
+      height: 4px;
+    }
+
+    .activity {
+      h2 {
+        display: block;
+        height: 58px;
+        line-height: 58px;
+        padding-left: $padding;
+        border-bottom: 1px solid #ccd2d6;
+      }
+
+      table {
+        font-size: 12px;
+        width: 100%;
+        tr {
+          border-bottom: 1px solid #ccd2d6;
+        }
+        td {
+          padding: 15px 30px 25px $padding;
+          &.date {
+            width: 22%;
+            padding-right: 0;
+          }
+        }
+      }
+      .commented {
+        float: left;
+        width: 475px;
+        border-right: 1px solid #ccd2d6;
+      }
+      .answered {
+        float: right;
+        width: 512px;
+      }
+    }
+  }
+}

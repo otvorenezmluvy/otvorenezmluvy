@@ -1,0 +1,167 @@
+<div id="content" class="nahlad">
+  <div class="back-to-search">
+    <% @last_search_params["_positional_args"] = nil %>
+    <%= link_to "&larr; Späť na vyhľadávanie".html_safe, search_documents_path(@last_search_params) %>
+  </div>
+  <div class="glow">
+    <div class="detail-zmluvy">
+      <table>
+        <tr>
+          <td class="table-box-left">Názov</td>
+          <td class="name"><%= @document.name || "Dokument bez uvedeného názvu" %></td>
+        </tr>
+        <% if @document.appendix? && @document.parent_contract %>
+          <tr>
+            <td class="table-box-left">Dodatok k zmluve</td>
+            <td><%= link_to @document.parent_contract.name, document_path(@document.parent_contract),     :title => "Zobraziť príslušnú zmluvu" %></td>
+          </tr>
+        <% end %>
+        <% if !@document.appendix? && @document.appendixes.any? %>
+          <tr>
+            <td class="table-box-left">Dodatky k zmluve</td>
+            <td>
+              <% @document.appendixes.each do |appendix| %>
+                <p><%= link_to appendix.name, document_path(appendix) %></p>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <% if @document.respond_to?(:department) && @document.department %>
+          <tr>
+            <td class="table-box-left">Rezort</td>
+            <td><%= link_to @document.department, search_documents_path(:department => @document.department), :title => "Vyhľadať dokumenty tohto rezortu" %></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td class="table-box-left">Objednávateľ</td>
+          <td><%= link_to @document.customer, search_documents_path(:customer => @document.customer), :title => "Vyhľadať dokumenty s týmto objedávateľom" %></td>
+        </tr>
+        <tr>
+          <td class="table-box-left">Dodávateľ</td>
+          <td>
+            <%= link_to @document.supplier, search_documents_path(:supplier => @document.supplier), :title => "Vyhľadať dokumenty s týmto dodávateľom" %>
+            <span title="Vek dodávateľa v čase zverejnenia zmluvy">(vek <% if @document.supplier_age %><%= humanize_duration(@document.supplier_age) %><% else %>neznámy<% end %>)</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-box-left">Cena</td>
+          <td class="price"><% if @document.total_amount %><%= number_to_euro(@document.total_amount) %><% else %>neznáma<% end %></td>
+        </tr>
+        <tr>
+          <td class="table-box-left">Dátum zverejnenia</td>
+          <td><%= format_date_or_unknown(@document.published_on) %></td>
+        </tr>
+        <tr>
+          <td class="table-box-left">Dátum platnosti</td>
+          <td><%= format_date_or_unknown(@document.effective_from) %> - <%= format_date_or_unknown(@document.expires_on) %> </td>
+        </tr>
+        <% if @document.respond_to?(:signed_on) %>
+            <tr>
+              <td class="table-box-left">Dátum podpisu</td>
+              <td><%= format_date_or_unknown(@document.signed_on) %></td>
+            </tr>
+        <% end %>
+        <% if @document.matching_heuristics.any? %>
+          <tr>
+            <td class="table-box-left">Zmluva spĺňa kritériá</td>
+            <td>
+              <% @document.matching_heuristics.each do |heuristic| %>
+                <span class="heuristic_label"><%= link_to heuristic.name, search_documents_path(heuristic.search_parameters) %></span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <td class="table-box-left">Pôvodný dokument</td>
+          <td><%= link_to "Odkaz na pôvodný dokument", @document.original_url %></td>
+        </tr>
+      </table>
+      <div class="soc-siete">
+        <div class="share first-button">
+          <div class="diskutovat">
+            <a href="#diskusia" class="button">Diskutovať</a>
+
+            <div>
+              <span></span><%= @document.comments.length %>
+            </div>
+          </div>
+        </div>
+        <div class="share">
+          <iframe src="http://www.facebook.com/plugins/like.php?app_id=230620916983801&amp;href=<%= document_url(@document) %>&amp;send=false&amp;layout=button_count&amp;width=90&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=arial&amp;height=21&amp;locale=sk_SK" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px;" allowTransparency="true"></iframe>
+        </div>
+        <div class="share">
+          <a href="http://twitter.com/share" class="twitter-share-button" data-url="<%= document_url(@document) %>" data-count="horizontal">Tweet</a>
+        </div>
+        <div class="share">
+          <div class="g-plusone" data-size="medium" href="<%= document_url(@document) %>"></div>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="search-separator"></div>
+
+    <div class="search">
+      <%= form_tag document_path(@document), :method => :get, :remote => true do %>
+        <%= text_field_tag :q, params[:q], :class => "inputbox", :value => 'Hľadať v dokumente', "data-placeholder" => 'Hľadať v dokumente' %>
+        <%= submit_tag "Hľadaj", :class => "button", :name => nil %>
+      <% end %>
+      <span class="results-summary"></span>
+    </div>
+
+    <div id="top">
+      <div class="top-right">
+        <div class="document">
+          <form class="">
+            <select id="_dv_attachment_selector"></select>
+          </form>
+          <div class="buttons _dv_document_control">
+            <a href="" class="scan _dv_document_scan">Scan</a>
+            <a href="" class="fulltext _dv_document_fulltext">Fulltext</a>
+            <a href="" class="add_note _dv_add_comment">Komentovať pasáž</a>
+          </div>
+          <%= render 'page_navigation' %>
+
+          <div class="doc _dv_document"></div>
+
+          <%= render 'page_navigation' %>
+        </div>
+      </div>
+      <div class="top-left">
+        <div class="module module-quickresults">
+          <%= render :partial => 'quickresults' %>
+        </div>
+        <div class="module hodnotenie last">
+          <h3>Ohodnoťte túto zmluvu</h3>
+          <%= render @visible_questions %>
+          <a href="#" class="toggle-and-destroy show-more" data-toggle="hidden-questions">Zobraziť ďalšie otázky &darr;</a>
+          <div id="hidden-questions">
+            <%= render @hidden_questions %>
+          </div>
+          <div id=progressbar-wrapper>
+              <% progress_value = (100*@user_answers.size.to_f/@questions.size.to_f).to_i %>
+              Váš aktuálny stav zodpovedanosti otázok: <span id=progress_value><%= number_to_percentage progress_value, :precision => 0 %></span>
+              <div id=progressbar data-value="<%= progress_value %>"></div>
+          </div>
+        </div>
+        <div class="back-to-search">
+          <%= link_to "&larr; Späť na vyhľadávanie".html_safe, search_documents_path(@last_search_params) %>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+</div>
+
+<%= render 'comments' %>
+
+<script type="text/javascript">
+  $(function() {
+    var dv = DocumentViewer.init({
+      attachments: <%== @attachments.to_json %>,
+      currentUser: "<%= current_user.try(:label) || 'Anonym' %>",
+      onReply: CrowdCloud.Comments.replyTo,
+      onShowReplies: CrowdCloud.Comments.showComment
+    });
+  });
+</script>
