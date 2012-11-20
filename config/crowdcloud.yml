@@ -12,6 +12,10 @@ test:
   <<: *defaults
   index_name: crowdcloud_test
 
+staging:
+  <<: *defaults
+  index_name: crowdcloud_staging
+
 production:
   <<: *defaults
   index_name: crowdcloud_production

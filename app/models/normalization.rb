@@ -3,6 +3,7 @@ module Normalization
 
   def normalize_points(points, to)
     return points if points == Infinity || points == -Infinity
+    to = 1 if to == 0
     normalized = points.to_f / to.to_f * 10
     normalized.round.to_i
   end

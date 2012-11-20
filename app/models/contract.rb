@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Contract < Document
   has_many :attachments, :foreign_key => :document_id
 

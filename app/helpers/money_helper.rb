@@ -1,3 +1,4 @@
+# encoding: utf-8
 module MoneyHelper
   def number_to_euro(amount)
     number_to_currency(amount, :unit => "&euro;", :delimiter => ' ', :format => "%n&nbsp;%u", :precision => 0)

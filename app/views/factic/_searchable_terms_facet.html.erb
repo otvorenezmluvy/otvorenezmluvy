@@ -7,12 +7,12 @@
           <% if item.selected? %>
             <%= link_to '&#10006;'.html_safe, search_documents_path(item.remove_params), :class => :remove, :title => "Zrušiť ohraničenie" %>
             <%= content_tag :span, :title => item.term do %>
-              <%= truncate(item.term, :length => truncate_const) || "neurčený" %> (<%= item.count %>)
+              <%= truncate(item.term, :length => truncate_const) || "neurčený" %> <% if item.count %>(<%= format_count(item.count) %>)<% end %>
             <% end %>
           <% else %>
             <%= link_to '&#10010;'.html_safe, search_documents_path(item.add_params), :class => :add, :title => "Pridať ohraničenie" %>
             <%= link_to truncate(item.term, :length => truncate_const) || "neurčený", search_documents_path(item.params), :title => item.term %>
-            (<%= item.count %>)
+            <% if item.count %>(<%= format_count(item.count) %>)<% end %>
           <% end %>
         <% end %>
       <% end %>

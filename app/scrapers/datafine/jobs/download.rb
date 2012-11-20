@@ -6,7 +6,7 @@ module Datafine
       protected
       def download(url, filename = nil)
         # TODO find a better way to download to save memory
-        html = open(url).read
+        html = open(url, 'r:utf-8').read
         if filename
           FileUtils.mkdir_p(File.dirname(filename))
           f = File.open(filename, "wb")

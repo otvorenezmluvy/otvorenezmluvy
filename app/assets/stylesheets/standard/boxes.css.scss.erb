@@ -1,0 +1,131 @@
+@import "mixins";
+
+.small_box {
+  .small_box_top {
+    width: 350px;
+    height: 23px;
+    background: url(<%= asset_path('small-box.png') %>) no-repeat scroll 0 0;
+  }
+  .small_box_center {
+    padding: 8px 36px;
+    width: 273px;
+    background: url(<%= asset_path('small-box.png') %>) no-repeat scroll 0 -23px;
+  }
+  .small_box_bottom {
+    width: 350px;
+    height: 23px;
+    background: url(<%= asset_path('small-box.png') %>) no-repeat scroll 0 -473px;
+  }
+}
+
+.reverse_note_box .up_box {
+  .up_box_top {
+    background: url(<%= asset_path 'up-box-top-r.png' %>) no-repeat center top;
+  }
+  .up_box_bottom {
+    background: url(<%= asset_path 'up-box-bottom-r.png' %>) no-repeat center top;
+  }
+}
+
+.up_box {
+  width: 590px;
+  cursor: default;
+
+  .up_box_top {
+    background: url(<%= asset_path 'up-box-top.png' %>) no-repeat center top;
+    height: 24px;
+  }
+  .up_box_bottom {
+    background: url(<%= asset_path 'up-box-bottom.png' %>) no-repeat center top;
+    height: 24px;
+  }
+  .up_box_center {
+    background: url(<%= asset_path 'up-box-center.png' %>) no-repeat center bottom;
+    padding: 15px 38px 10px 40px;
+  }
+
+  p.user {
+    padding-left: 80px;
+    margin-bottom: 20px;
+    font-size: 100%;
+  }
+
+}
+
+.small_box, .up_box {
+  label {
+    display: block;
+    float: left;
+    margin-bottom: 10px;
+    clear: left;
+  }
+
+  textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    line-height: 16px;
+    margin-left: 10px;
+    @include shaded-input;
+  }
+  div.buttons2 {
+    height: 36px;
+    float: none;
+  }
+
+  a.cancel {
+    float: right;
+    margin-left: 18px;
+    line-height: 36px;
+    height: 36px;
+  }
+
+  .submit {
+    display: block;
+    float: right;
+    line-height: 36px;
+    height: 36px;
+    margin-left: 18px;
+    width: 147px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+}
+
+.up_box {
+  textarea {
+    height: 60px;
+    width: 410px;
+  }
+
+  label {
+    height: 38px;
+    line-height: 38px;
+    width: 70px;
+  }
+}
+
+.small_box {
+  position: absolute;
+  right: 0;
+
+  .small_box {
+    position: absolute;
+    right: 0;
+  }
+  .small_box {
+    position: absolute;
+    right: 0;
+  }
+  form {
+    margin-top: 10px;
+    display: none;
+  }
+
+  textarea {
+    height: 30px;
+    width: 183px;
+  }
+}
+

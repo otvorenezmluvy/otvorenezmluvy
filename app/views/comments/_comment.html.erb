@@ -1,26 +1,43 @@
-<%= content_tag :div, :id => "comment_#{comment.id}", :class => 'comment-box comment-top' do %>
-  <%= content_tag :a, :name => "comment_#{comment.id}" do %>
-    <div class="avatar">
-      <%= image_tag gravatar_url(comment.user), :size => '60x60', :alt => comment.author_label %>
+<%= content_tag :div, :id => dom_id(comment) do %>
+  <div class="comment-box comment-top">
+    <%= content_tag :a, :name => dom_id(comment) do %>
+      <div class="avatar">
+        <%= image_tag gravatar_url(comment.user), :size => '60x60', :alt => comment.author_label %>
+      </div>
+    <% end %>
+    <div class="comment">
+      <p class="date"><%= comment.author_label %>, <%= time_ago_in_words(comment.created_at) %></p>
+      <div class="text">
+        <% if comment.censored? %>
+            <% if can?(:toggle, comment) %>
+              <p><em>Komentár bol odstránený <% if comment.censored_by %>moderátorom <%= comment.censored_by.name %><% else %>moderátorom<% end %>.</em></p>
+              <%= simple_format(comment.comment) %>
+            <% else %>
+              <p><em>Komentár bol odstránený moderátorom.</em></p>
+            <% end %>
+        <% else %>
+          <%= simple_format(comment.comment) %>
+        <% end %>
+      </div>
+      <%= link_to '▲', vote_up_document_comment_path(@document, comment), :class => [:vote_up, :norm] %>
+      <span class="current_votes"><%= comment.votes %></span>
+      <%= link_to '▼', vote_down_document_comment_path(@document, comment), :class => :vote_down %>
+      <a href="#" class="reply comment-menu" data-reply-to="<%= comment.id %>">Odpovedať</a>
+      <% if comment.related_to_document_area? %>
+        <%= link_to 'Zobraziť anotáciu v zmluve', comment_anchor(comment), :class => 'show_in_contract comment-menu' %>
+      <% end %>
+      <% if can?(:toggle, comment) %>
+          <% if comment.censored? %>
+              <%= link_to 'Povoliť zobrazenie komentára', toggle_document_comment_path(@document, comment), :method => :post, :class => 'comment-menu', 'data-confirm' => 'Naozaj chcete opať povoliť tento komentár?' %>
+          <% else %>
+            <%= link_to 'Skryť komentár', toggle_document_comment_path(@document, comment), :method => :post, :class => 'comment-menu', 'data-confirm' => 'Naozaj chcete skryť tento komentár?' %>
+          <% end %>
+      <% end %>
+      <%= link_to 'Trvalý odkaz', document_path(@document, :anchor => "comment_#{comment.id}"), :class => 'comment-menu' %>
+      <%= link_to 'Upozorniť na nevhodný komentár', flag_document_comment_path(@document, comment), 'data-reason-url' => flag_reason_document_comment_path(@document, comment), :method => :post, :class => 'comment-menu flag' %>
+      <div class="messages"></div>
     </div>
-  <% end %>
-  <div class="comment">
-    <p class="date"><%= comment.author_label %>, <%= time_ago_in_words(comment.created_at) %></p>
-    <div class="text"><%= simple_format(comment.comment) %></div>
-    <%= link_to '▲', vote_up_document_comment_path(@document, comment), :class => [:vote_up, :norm] %>
-    <span class="current_votes"><%= comment.votes %></span>
-    <%= link_to '▼', vote_down_document_comment_path(@document, comment), :class => :vote_down %>
-    <a href="#" class="reply comment-menu" data-reply-to="<%= comment.id %>">Odpovedať</a>
-    <% if comment.related_to_document_area? %>
-      <%= link_to 'Zobraziť anotáciu v zmluve', comment_anchor(comment), :class => 'show_in_contract comment-menu' %>
-    <% end %>
-    <% if current_user && current_user.admin? %>
-      <%= link_to 'Zmazať príspevok', document_comment_path(@document, comment), :class => 'delete comment-menu', 'data-confirm' => 'Zmazať príspevok (a všetky odpovede)?' %>
-    <% end %>
-    <%= link_to 'Trvalý odkaz', document_path(@document, :anchor => "comment_#{comment.id}"), :class => 'comment-menu' %>
-    <%= link_to 'Upozorniť na nevhodný komentár', flag_document_comment_path(@document, comment), :method => :post, :class => 'comment-menu' %>
-    <div class="messages"></div>
+    <div class="clear"></div>
   </div>
-  <div class="clear"></div>
   <%= render :partial => 'comments/reply', :collection => comment.replies, :as => :comment %>
 <% end %>

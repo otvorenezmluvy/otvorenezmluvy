@@ -6,7 +6,7 @@
     </tr>
     <tr>
       <td class="table-box-left">Názov</td>
-      <td class="value"><%= link_to document.name, document_path(document) %></td>
+      <td class="value contract-name"><%= link_to document.name, document_path(document) %></td>
     </tr>
     <tr>
       <td class="table-box-left">Obstarávateľ</td>
@@ -21,7 +21,7 @@
       <td class="value"><span class="price"><%= number_to_euro(document.total_amount) || 'neznáma' %></span></td>
     </tr>
     <% if document.send("matching_heuristics").any? %>
-      <tr>
+      <tr class="labels">
         <td class="table-box-left">Zmluva spĺňa kritériá</td>
         <td class="value"><%= heuristics_from_hit(document).html_safe %></td>
       </tr>
@@ -29,7 +29,7 @@
     <% if document.comments_count > 0 %>
       <tr>
         <td></td>
-        <td><div class="comments_count"><%= t(:comments, :count => document.comments_count) %></div></td>
+        <td><div class="comments_count"><%= link_to t(:comments, :count => document.comments_count), document_discussion_path(document) %></div></td>
       </tr>
     <% end %>
   </tbody>

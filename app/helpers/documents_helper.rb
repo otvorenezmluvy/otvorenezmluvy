@@ -1,20 +1,27 @@
+# encoding: utf-8
 module DocumentsHelper
+  def link_to_document(name, document)
+    link_to name, document_path(document)
+  end
+
   def format_unixtimestamp_to_month(timestamp)
     Time.at(timestamp / 1000).strftime("%m. %Y")
   end
 
-  def document_page_path(page, options = {})
-    # TODO when https://github.com/rails/rails/issues/2469 is fixed
-    # use :anchor
-    document_path(page.attachment.document_id, :q => options[:q])
+  def document_discussion_path(document, options = {})
+    document_path(document, options.merge(:anchor => 'diskusia'))
   end
 
   def document_page_anchor(page)
-    "/document/#{page.attachment.number}/page/#{page.number}"
+    "document/#{page.attachment.number}/page/#{page.number}"
   end
 
   def comment_anchor(comment)
-    "#/document/#{comment.page.attachment.number}/page/#{comment.page.number}/comment/#{comment.id}"
+    "document/#{comment.page.attachment.number}/page/#{comment.page.number}/comment/#{comment.id}"
+  end
+
+  def document_comment_anchor(document, comment)
+    document_path(document, :anchor => dom_id(comment.id))
   end
 
   def t_page_count(count)
@@ -77,15 +84,7 @@ module DocumentsHelper
     result
   end
 
-  def weird_heuristics_from_hit(hit)
-    result = ""
-    heuristic_params = Array.new
-    heuristic_params << hit.send("matching_heuristics.serialized_search_parameters")
-    heuristic_params = heuristic_params.flatten
-    hit.send("matching_heuristics.name").try(:each_with_index) do |heuristic_name, index|
-      result << link_to(heuristic_name, search_documents_path(ActiveSupport::JSON.decode(heuristic_params[index]).with_indifferent_access), :class => 'heuristic_label')
-      result << "&nbsp;"
-    end
-    result
+  def shorten_department(department)
+    department.gsub('Ministerstvo', 'Min.')
   end
 end

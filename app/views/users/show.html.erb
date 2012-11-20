@@ -28,5 +28,17 @@
       </table>
     </div>
   </div>
+  <div class="watchlist" style="clear: both">
+    <h2>Watchlist</h2>
+    <% @watched_documents.each do |watch| %>
+      <%= link_to watch.document.name, document_path(watch.document) %> (<%= link_to 'Prestat sledovat', unwatch_document_path(watch.document), :method => :post %>)
+      <%= watch.notice %>
+      <ul>
+        <% watch.document.events.each do |event| %>
+          <li><%= render "events/#{event.change_type}", event: event, document: watch.document %></li>
+        <% end -%>
+      </ul>
+    <% end -%>
+  </div>
   <div class="clear"></div>
 </div>

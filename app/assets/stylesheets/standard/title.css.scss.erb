@@ -35,6 +35,7 @@
 #tabs {
   margin-top: 50px;
   height: 36px;
+  overflow: hidden;
   li {
     list-style-type: none;
     float: left;
@@ -42,16 +43,24 @@
     z-index: 9;
     a {
       width: 186px;
-      height: 36px;
+      height: 33px;
       font-size: 12px;
-      background: url(<%= asset_path 'tab_inactive_bg.png' %>) no-repeat;
       display: block;
-      line-height: 39px;
+      line-height: 35px;
+      @include border-radius(6px 6px 0 0);
+      background: url(<%= asset_path('inactive_tab.png') %>) repeat-x;
       &.active {
+        height: 36px;
         color: #000;
-        background: url(<%= asset_path 'recent.png' %>) no-repeat;
-        width: 186px;
+        background: white;
+        border: 1px solid #ccd2d6;
+        border-bottom: none;
+        @include box-shadow(0, 0, 4px, #ccc);
       }
+    }
+
+    & + li {
+      margin-left: 3px;
     }
   }
 }
@@ -65,8 +74,15 @@ table.contract {
   width: 90%;
   margin-bottom: 6px;
 
-  td.value {
-    width: 420px;
+  td {
+    padding-bottom: 5px;
+    &.value {
+      width: 420px;
+    }
+
+    &.contract-name {
+      font-weight: bold;
+    }
   }
 
   &.first {
@@ -74,12 +90,13 @@ table.contract {
   }
 
   tr {
-    height: 21px;
-    padding: 0 10px;
-  }
+    &.space {
+      height: 15px;
+    }
 
-  tr.space {
-    height: 15px;
+    &.labels td {
+      padding-top: 3px;
+    }
   }
 
   .price {
@@ -98,6 +115,16 @@ table.contract {
   .comments_count {
     background: url(<%= asset_path 'comment.png' %>) no-repeat left center;
     padding-left: 20px;
+    a {
+      color: black;
+    }
+  }
+
+  .event {
+    .comments_count {
+      margin-left: 109px;
+      margin-top: 13px;
+    }
   }
 }
 
@@ -125,7 +152,6 @@ table.contract {
 
 .graph {
   height: 200px;
-  background: url(<%= asset_path 'graph_03.png' %>) bottom center no-repeat;
   margin-bottom: 15px;
 }
 
@@ -199,12 +225,15 @@ table.for-graph {
     border: none;
     background: url(<%= asset_path 'button_bg.png' %>);
     &:hover {
+      background: url(<%= asset_path 'button_bg.png' %>) scroll 0 80px;
+    }
+    &:active {
       background: url(<%= asset_path 'button_bg.png' %>) scroll 0 40px;
     }
   }
 }
 
-#tab_most_commented {
+#tab_most_commented, #tab_recent_comments {
   display: none;
 }
 
@@ -217,4 +246,9 @@ table.for-graph {
     list-style-type: none;
     padding-top: 50px;
   }
+}
+
+.cta {
+  width: 209px;
+  margin: 0 auto;
 }

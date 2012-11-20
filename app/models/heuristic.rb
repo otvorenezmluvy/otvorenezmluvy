@@ -1,10 +1,12 @@
 class Heuristic < ActiveRecord::Base
+  attr_accessible :serialized_search_parameters, :name, :formula, :explanation
+
   def search_parameters=(params)
     self.serialized_search_parameters = params.to_json
   end
 
   def search_parameters
-    ActiveSupport::JSON.decode(serialized_search_parameters).with_indifferent_access
+    MultiJson.load(serialized_search_parameters).with_indifferent_access
   end
 
   def self.find_or_initialize_by_search_parameters(params)

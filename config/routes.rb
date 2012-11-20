@@ -1,25 +1,48 @@
 Crowdcloud::Application.routes.draw do
-  devise_for :users, :controllers => { :registrations => "registrations" }
-  resources :users do
-    member do
-      post :ban
-      post :unban
-      get :ban_ip
-      post :ban_ip
-      post :unban_ip
+  devise_for :users, :controllers => {:registrations => "registrations"}
+
+  resources :users
+
+  resource :dashboard, controller: :dashboard do
+    post :filter
+  end
+
+  namespace :admin do
+    resources :comments do
+      resources :reports
+    end
+    resources :spaceship_settings
+    resources :heuristics
+    resources :users do
+      member do
+        post :ban
+        post :unban
+        get :ban_ip
+        post :ban_ip
+        post :unban_ip
+      end
     end
   end
 
-  resources :heuristics
-  resources :spaceship_settings
+  resource :comments do
+    get :recent, on: :collection
+  end
 
   resources :documents do
     get :search, :on => :collection
     post :quickfacet, :on => :collection
+    post :toggle_visibility, :on => :collection
+    post :watch, :on => :member
+    post :unwatch, :on => :member
     resources :comments do
-      get :vote_up, :on => :member
-      get :vote_down, :on => :member
-      post :flag, :on => :member
+      member do
+        post :vote_up
+        post :vote_down
+        post :flag
+        post :flag_reason
+        put :report
+        post :toggle
+      end
     end
     resources :questions
   end

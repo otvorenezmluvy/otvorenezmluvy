@@ -25,9 +25,13 @@ class Factic
     private
     def query_definition(params)
       {:query_string => {
-                          :query => params[name],
+                          :query => escape_query(params[name]),
                           :default_operator => :and
       }}
+    end
+
+    def escape_query(q)
+      q.gsub('"', '\"')
     end
 
     def active?(params)

@@ -1,15 +1,11 @@
+<div style="clear: both;"></div>
 <div id="content" class="login">
-<h2>Zabudnuté heslo?</h2>
-
 <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
   <%= devise_error_messages! %>
 
   <p><%= f.label :email %>
   <%= f.email_field :email %></p>
 
-  <p><%= f.submit "Poslať inštrukcie na zresetovanie hesla" %></p>
+  <p class="indent"><%= f.submit "Poslať inštrukcie na zresetovanie hesla" %></p>
 <% end %>
-<div id="devise_links">
-<%= render :partial => "devise/shared/links" %>
-</div>
 </div>

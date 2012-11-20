@@ -4,6 +4,8 @@ class Page < ActiveRecord::Base
   belongs_to :attachment
   has_many :comments, :include => :user
 
+  attr_accessible :number, :text
+
   def to_indexable
     serializable_hash(:include => {:attachment => {:only => [:document_id, :number]}})
   end

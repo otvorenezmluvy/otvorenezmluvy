@@ -5,6 +5,8 @@ module Crz
       @queue = :crz
 
       def self.perform(page = 0)
+        Crz::Appendix
+        Crz::Contract
         html = download("http://www.crz.gov.sk/index.php?ID=114394&page=#{page}")
         list = Crz::Parsers::DocumentsListParser.parse(html)
         existing = Crz::Document.find_all_by_crz_id(list.contract_ids).collect(&:crz_id)

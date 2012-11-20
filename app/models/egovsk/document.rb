@@ -1,10 +1,7 @@
-require_association 'egovsk/contract'
-require_association 'egovsk/appendix'
-
 class Egovsk::Document < Contract
   #TODO: try moving this to superclass
-  has_many :attachments
-  has_one :egovsk_document_detail, :class_name => 'Egovsk::DocumentDetail'
+  has_many :attachments, :autosave => true
+  has_one :egovsk_document_detail, :class_name => 'Egovsk::DocumentDetail', :autosave => true
 
   delegate :egovsk_id, :egovsk_id=,                        #"odkaz na detail"
            :total_amount, :total_amount=,                 #"cena"
@@ -26,13 +23,15 @@ class Egovsk::Document < Contract
            :regis_supplier,
            :to => :lazy_detail
 
+  attr_accessible :egovsk_attachment_type, :egovsk_doc_id, :egovsk_doc2_id, :name, :number,
+                  :supplier
 
   def original_url
     "http://zmluvy.egov.sk/Egov/detail/id:#{egovsk_id}"
   end
 
   def self.find_all_by_egovsk_id(egovsk_ids)
-    joins(:egovsk_document_detail).where(:egovsk_document_details => {:egovsk_id => egovsk_ids})
+    includes(:egovsk_document_detail).where(:egovsk_document_details => {:egovsk_id => egovsk_ids})
   end
 
   def lazy_detail
@@ -43,3 +42,7 @@ class Egovsk::Document < Contract
     "zmluvy.egov.sk"
   end
 end
+
+require_association 'egovsk/contract'
+require_association 'egovsk/appendix'
+

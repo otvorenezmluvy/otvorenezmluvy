@@ -64,7 +64,7 @@
     time:
         formats:
             default: "%a %d. %B %Y %H:%M %z"
-            short: "%d.%m. %H:%M"
+            short: "%d.%m. %H:%M %Y"
             long: "%A %d. %B %Y %H:%M"
         am: "dopoludnia"
         pm: "popoludní"

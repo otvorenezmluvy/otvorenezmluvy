@@ -1,3 +1,4 @@
+# encoding: utf-8
 module DateHelper
   def human_ago(days)
     return t(:days, :count => days) if days < 30

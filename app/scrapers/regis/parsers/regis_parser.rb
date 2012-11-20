@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Regis
   module Parsers
     class RegisParser

@@ -46,7 +46,8 @@ class Factic
       facet_filters << {:query => {:query_string => {
           :query => "#{params[:term]}*",
           :default_operator => :and,
-          :default_field => @field
+          :default_field => @field,
+          :analyze_wildcard => true,
       }}}
       facet_filters.delete(filter_definition(params))
       other_terms_facet[:global] = true

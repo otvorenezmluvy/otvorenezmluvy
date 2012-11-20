@@ -1,0 +1,36 @@
+<section>
+  <h1>Hlásenia komentára</h1>
+  <p><%= link_to @comment.document.name, document_path(@comment.document) %> (<%= @comment.document.customer %>, Dodávateľ: <%= @comment.document.supplier %>)</p>
+  <p><%= simple_format(@comment.comment) %></p>
+
+  <p>
+    <%= link_to_comment time_ago_in_words(@comment.created_at), @comment %>
+    autor: <% if @comment.user %><%= link_to @comment.user.name, user_path(@comment.user) %><% else %>anonym<% end %>,
+    počet hlásení: <strong><%= @comment.flags %></strong>,
+    počet zdôvodnení: <strong><%= @comment.reports_count %></strong>
+  </p>
+
+  <% if @reports.any? %>
+      <table class="table table-condensed">
+        <thead>
+        <tr>
+          <th>Čas hlásenia</th>
+          <th>Zdôvodnenie</th>
+          <th>Autor</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @reports.each do |report| %>
+            <tr>
+              <td><%= time_ago_in_words(report.created_at) %></td>
+              <td><%= simple_format(report.body) %></td>
+              <td>
+                <% if report.user %><%= link_to report.user.name, user_path(report.user) %>
+                <% else %>anonym
+                <% end %></td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+  <% end %>
+</section>

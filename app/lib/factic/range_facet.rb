@@ -60,8 +60,8 @@ class Factic
           :should => {
               :range => {
                   @field => {}.tap do |range|
-                    range[:from] = params[@param.from] unless params[@param.from].blank?
-                    range[:lt] = params[@param.to] unless params[@param.to].blank?
+                    range[:from] = sanitize_range_boundary(params[@param.from]) unless params[@param.from].blank?
+                    range[:lt] = sanitize_range_boundary(params[@param.to]) unless params[@param.to].blank?
                   end
               }
           }
@@ -119,6 +119,15 @@ class Factic
     end
 
     private
+
+    def sanitize_range_boundary(boundary)
+      cleaned = boundary.gsub(/[^0-9\.,]/, '').gsub(',', '.')
+      if cleaned.empty?
+        0
+      else
+        cleaned
+      end
+    end
 
     def create_param(range)
       return "_missing" if range.nil?

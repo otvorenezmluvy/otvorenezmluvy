@@ -64,17 +64,21 @@ class DocumentsRepository
     @index.recreate
   end
 
+  def remap
+    @index.remap
+  end
+
   def reindex_all
     @index.reindex_all(:attachments => :pages)
   end
 
   def statistics
     search = Factic::Search.new
-    search.facets[:all] = {:filter => {:match_all => ''}, :global => true}
+    search.facets[:all] = {:filter => {:match_all => {}}, :global => true}
     search.facets[:amounts] = {:statistical => {:field => :total_amount}, :global => true}
-    search.facets[:amounts_from_last_week] = {:statistical => {:field => :total_amount}, :facet_filter => {:numeric_range => { :published_on => {:gt => 7.days.ago}}}}
-    search.facets[:amounts_by_department] = {:terms_stats => {:key_field => "department.untouched", :value_field => :total_amount, :order => :total, :size => 5}, :global => true}
-    @index.search(search).facets
+    search.facets[:amounts_from_last_week] = {:statistical => {:field => :total_amount}, :facet_filter => {:numeric_range => { :published_on => {:gt => 1.month.ago.to_i}}}}
+    search.facets[:amounts_by_department] = {:terms_stats => {:key_field => 'department.untouched', :value_field => :total_amount, :order => :total, :size => 5}, :global => true}
+    @index.search(search.to_query).facets
   end
 
   def most_commented
@@ -82,15 +86,15 @@ class DocumentsRepository
     search.sort << {:comments_count => :desc}
     search.filters << {:numeric_range => {:comments_count => {:gt => 0}}}
     search.size = 5
-    @index.search(search)
+    @index.search(search.to_query)
   end
 
   def most_recent(min_points, days_back)
     search = Factic::Search.new
-    search.filters << {:numeric_range => {:published_on => {:gte => days_back.days.ago}}}
+    search.filters << {:numeric_range => {:published_on => {:gte => days_back.days.ago.to_i}}}
     search.filters << {:numeric_range => {:points => {:gte => min_points}}}
     search.scoring_function = 'random()'
     search.size = 5
-    @index.search(search)
+    @index.search(search.to_query)
   end
 end

@@ -18,6 +18,8 @@ body.detail {
     margin: 32px 0 0 0;
     position: relative;
     z-index: 9;
+    height: 38px;
+    overflow: inherit;
     li {
       @include box-shadow(0, -2px, 2px, #ccc);
       &.active {
@@ -40,6 +42,30 @@ body.detail {
   background: #ff0;
 }
 
+#top.empty {
+  height: 600px;
+  h1 {
+    font-size: 16px;
+    margin-bottom: 17px;
+    margin-top: 20px;
+    width: 218px;
+    padding-left: 20px;
+  }
+  li {
+    margin-top: 10px;
+    padding-left: 20px;
+    width: 218px;
+  }
+
+  .top-right {
+    margin-top: 10px;
+    p {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+  }
+}
+
 #facets {
   li {
     list-style-type: none;
@@ -59,7 +85,6 @@ body.detail {
       display: block;
       font-size: 16px;
       font-weight: 700;
-      cursor: default;
       &:hover {
         text-decoration: none;
       }
@@ -78,6 +103,10 @@ body.detail {
       line-height: 47px;
       padding: 0 0 0 20px;
       width: 218px;
+
+      * {
+        display: none;
+      }
 
       &:hover {
         background: url(<%= asset_path 'facet-closed-hover.png' %>) no-repeat;
@@ -168,10 +197,16 @@ body.detail {
           padding: 0;
           width: 35px;
           height: 24px;
-          background: url(<%= asset_path('confirm.png') %>) no-repeat center center;
-          border: 1px solid #ccd2d6;
-          @include border-radius(2px);
+          background: url(<%= asset_path('confirm.png') %>) no-repeat 0 -24px;
+          border: none;
+          @include box-shadow(0, 0, 0, #ccc);
           cursor: pointer;
+
+          &.active {
+            background: url(<%= asset_path('confirm.png') %>) no-repeat 0 0;
+            border: 1px solid #ccd2d6;
+            @include border-radius(2px);
+          }
         }
       }
     }
@@ -268,18 +303,29 @@ html body.detail .select-panel .select-right {
     }
   }
   .li-right {
-    text-align: right;
-    background-color: #f8fafb;
-    padding: 5px 10px 5px 10px;
-    @include border-radius(5px);
-    position: absolute;
-    top: 15px;
-    right: 0;
-    width: 140px;
     .price {
+      text-align: right;
+      background-color: #f8fafb;
+      padding: 5px 10px 5px 10px;
+      @include border-radius(5px);
+      position: absolute;
+      top: 15px;
+      right: 0;
+      width: 140px;
       font-size: 18px;
       font-weight: bold;
       color: #222;
+    }
+  }
+
+  .controls {
+    position: absolute;
+    right: 10px;
+    top: 62px;
+    .small_box {
+      z-index: 999;
+      position: absolute;
+      right: -79px;
     }
   }
 }
@@ -344,9 +390,12 @@ html body.detail .select-panel .select-right {
     float: left;
     width: 40px;
     height: 25px;
-    background: url(<%= asset_path 'sort_desc.png' %>) no-repeat;
+    background: url(<%= asset_path 'sort.png' %>) no-repeat 0 -75px;
+    &:hover {
+      background: url(<%= asset_path 'sort.png' %>) no-repeat 0 -100px;
+    }
     &.active {
-      background: url(<%= asset_path 'sort_desc_active.png' %>) no-repeat;
+      background: url(<%= asset_path 'sort.png' %>) no-repeat 0 0;
     }
   }
   a.prew {
@@ -354,13 +403,16 @@ html body.detail .select-panel .select-right {
     float: left;
     width: 40px;
     height: 25px;
-    background: url(<%= asset_path 'sort_asc.png' %>) no-repeat;
+    background: url(<%= asset_path 'sort.png' %>) no-repeat 0 -25px;
+    &:hover {
+      background: url(<%= asset_path 'sort.png' %>) no-repeat 0 -50px;
+    }
     &.active {
       display: block;
       float: left;
       width: 40px;
       height: 25px;
-      background: url(<%= asset_path 'sort_asc_active.png' %>) no-repeat;
+      background: url(<%= asset_path 'sort.png' %>) no-repeat 0 -125px;
     }
   }
 }

@@ -1,7 +1,7 @@
 <ul>
   <% date_histogram_facet.entries.each do |item| %>
       <%= content_tag :li, item.selected? ? {:class => :selected} : nil do %>
-        <%= link_to item.entry, item.search_params, :title => item.entry  %> (<%= item.count %>)
+        <%= link_to item.entry, item.search_params, :title => item.entry  %> (<%= format_count(item.count) %>)
       <% end %>
   <% end %>
 </ul>

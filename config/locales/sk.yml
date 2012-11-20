@@ -22,54 +22,65 @@ sk:
     appendixes_count: Počet dodatkov
     points: Papričky?
     source: Zdroj
+    scope: Moje zmluvy
   matches:
     zero: Nenašli sme žiadny výskyt spojenia "%{query}"
     one: Našli sme jeden výskyt spojenia "%{query}"
     few: Našli sme %{count} výskyty spojenia "%{query}"
     other: Našli sme %{count} výskytov spojenia "%{query}"
+  failed_jobs:
+    zero: "Z %{source} sa nestiahlo 0 zmlúv"
+    one: "Z %{source} sa nestiahla 1 zmluva"
+    few: "Z %{source} sa nestiahli %{count} zmlúv"
+    other: "Z %{source} sa nestiahlo %{count} zmlúv"
   in_n_contracts:
     one: 1 zmluve
-    few: %{count} zmluvách
-    other: %{count} zmluvách
+    few: "%{count} zmluvách"
+    other: "%{count} zmluvách"
   of_n_contracts:
     one: 1 zmluvy
-    few: %{count} zmlúv
-    other: %{count} zmlúv
+    few: "%{count} zmlúv"
+    other: "%{count} zmlúv"
   days:
     one: 1 deň
-    few: %{count} dni
-    other: %{count} dní
+    few: "%{count} dni"
+    other: "%{count} dní"
   months:
     one: 1 mesiac
-    few: %{count} mesiace
-    other: %{count} mesiacov
+    few: "%{count} mesiace"
+    other: "%{count} mesiacov"
   years:
     one: 1 rok
-    few: %{count} roky
-    other: %{count} rokov
+    few: "%{count} roky"
+    other: "%{count} rokov"
   attachments:
     one: 1 príloha
-    few: %{count} prílohy
-    other: %{count} príloh
+    few: "%{count} prílohy"
+    other: "%{count} príloh"
   appendixes:
     zero: bez dodatkov
     one: 1 dodatok
-    few: %{count} dodatky
-    other: %{count} dodatkov
+    few: "%{count} dodatky"
+    other: "%{count} dodatkov"
   pages:
     one: 1 strana
-    few: %{count} strany
-    other: %{count} strán
+    few: "%{count} strany"
+    other: "%{count} strán"
   comments:
     zero: žiadny komentár
     one: 1 komentár
-    few: %{count} komentáre
-    other: %{count} komentárov
+    few: "%{count} komentáre"
+    other: "%{count} komentárov"
+  reactions:
+    zero: bez reakcií
+    one: 1 reakcia
+    few: "%{count} reakcie"
+    other: "%{count} reakcií"
   points:
     zero: žiadne papričky
     one: 1 paprička
-    few: %{count} papričky
-    other: %{count} papričiek
+    few: "%{count} papričky"
+    other: "%{count} papričiek"
   views:
     pagination:
       last: posledná strana

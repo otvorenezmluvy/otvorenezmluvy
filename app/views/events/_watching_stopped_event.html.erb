@@ -1,0 +1,7 @@
+<div class="event">
+  <%= image_tag gravatar_url(current_user), size: '60x60', alt: current_user.name, class: 'event-img event-unwatch' %>
+
+  <strong>Prestali ste sledovať zmluvu</strong>
+  <p><em><%= time_ago_in_words(event.created_at) %></em></p>
+  <div class="clear"></div>
+</div>

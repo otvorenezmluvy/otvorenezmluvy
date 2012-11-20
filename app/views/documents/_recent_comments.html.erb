@@ -1,0 +1,50 @@
+<% comments.each do |comment| %>
+  <table class='contract <%# "first" if document_counter == 0 %>'>
+    <tbody>
+      <tr class="space">
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="table-box-left">Názov</td>
+        <td class="value contract-name"><%= link_to comment.document.name, document_path(comment.document) %></td>
+      </tr>
+      <tr>
+        <td class="table-box-left">Obstarávateľ</td>
+        <td class="value"><%= comment.document.customer %></td>
+      </tr>
+      <tr>
+        <td class="table-box-left">Dodávateľ</td>
+        <td class="value"><%= comment.document.supplier %></td>
+      </tr>
+      <tr>
+        <td class="table-box-left">Cena</td>
+        <td class="value"><span class="price"><%= number_to_euro(comment.document.total_amount) || 'neznáma' %></span></td>
+      </tr>
+      <% if comment.document.send("matching_heuristics").any? %>
+        <tr class="labels">
+          <td class="table-box-left">Zmluva spĺňa kritériá</td>
+          <td class="value"><%= heuristics_from_hit(comment.document).html_safe %></td>
+        </tr>
+      <% end %>
+      <tr>
+        <td class="table-box-left"></td>
+        <td>
+          <div class="event">
+            <%= image_tag gravatar_url(comment.user), size: '60x60', alt: comment.user.try(:name), class: 'event-img event-comment' %>
+
+            <strong><%= link_to_comment(comment.author_label, comment) %> pridal komentár ku zmluve</strong>
+            <p><em><% if comment.censored? %>Komentár bol medzičasom odstránený moderátorom.<% else %>"<%= truncate(comment.comment, length: 80) %>"<% end %></em></p>
+            <p><em><%= time_ago_in_words(comment.created_at) %></em></p>
+            <div class="clear"></div>
+            <% if comment.replies_count > 0 %>
+              <div class="comments_count">
+                <%= link_to_comment(t(:reactions, count: comment.replies_count), comment) %>
+              </div>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+<% end -%>

@@ -1,0 +1,76 @@
+<section>
+  <% if flash[:notice] %>
+      <div class="alert alert-success">
+        <%= link_to '&times;'.html_safe, '#', class: :close, data: {dismiss: :alert} %>
+        <%= flash[:notice] %>
+      </div>
+  <% end %>
+  <div class="row">
+    <div class="span9">
+      <h1>Používatelia</h1>
+    </div>
+
+    <div class="span3 searchbox">
+      <%= form_tag admin_users_path, class: 'form-search', method: :get do %>
+          <div class="input-append">
+            <%= text_field_tag :q, @query, class: ['input-small', 'search-query'] %>
+            <%= button_tag 'Hľadaj', class: :btn, name: nil %>
+          </div>
+      <% end %>
+    </div>
+  </div>
+  <% if @users.length > 0 %>
+      <table class="users table table-condensed">
+        <thead>
+        <tr>
+          <th>Meno</th>
+          <th>Email</th>
+          <th>Admin?</th>
+          <th>Expert?</th>
+          <th>Vytvorený dňa</th>
+          <th>Posledné prihlásenie</th>
+          <th>Posledná IP adresa</th>
+          <th class="actions">Akcie</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @users.each do |user| %>
+            <%= content_tag :tr, class: user.banned? ? :banned : nil do %>
+                <td><%= link_to user.name, user %></td>
+                <td><%= user.email %></td>
+                <td>
+                  <%= form_for [:admin, user] do |f| %>
+                      <%= f.check_box :admin, :class => "user_admin" %>
+                  <% end %>
+                </td>
+                <td>
+                  <%= form_for [:admin, user] do |f| %>
+                      <%= f.check_box :expert, :class => "user_expert" %>
+                  <% end %>
+                </td>
+                <td class="date"><%= date_to_human(user.created_at) %></td>
+                <td class="date"><%= date_to_human(user.last_sign_in_at) %></td>
+                <% style = user.banned_ip.nil? ? nil : "style=text-decoration:line-through;" %>
+                <td <%= style %>><%= user.last_sign_in_ip %></td>
+                <td class="actions">
+                  <% unless user.banned %>
+                      <%= link_to 'ban účtu', ban_admin_user_path(user), :method => :post, :class => "btn btn-mini btn-danger", :confirm => "Naozaj chcete #{user.name} zablokovať?" %>
+                  <% else %>
+                      <%= link_to 'un-ban účtu', unban_admin_user_path(user), :method => :post, :class => "btn btn-mini btn-danger", :confirm => "Naozaj chcete #{user.name} odblokovať?" %>
+                  <% end %>
+
+                  <% if user.banned_ip.nil? %>
+                      <%= link_to 'ban IP', ban_ip_admin_user_path(user), :method => :post, :class => "btn btn-mini btn-danger" %>
+                  <% else %>
+                      <%= link_to 'un-ban IP', unban_ip_admin_user_path(user), :method => :post, :class => "btn btn-mini btn-danger", :confirm => "Naozaj IP adresu chcete #{user.last_sign_in_ip} odblokovať?" %>
+                  <% end %>
+                </td>
+            <% end %>
+        <% end %>
+        </tbody>
+      </table>
+      <%= paginate @users, theme: 'twitter-bootstrap' %>
+  <% else %>
+      <p>Nenašli sa žiadni používatelia.</p>
+  <% end %>
+</section>

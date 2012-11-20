@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+</head>
+<body>
+<h1>Klingoni na pravoboku!</h1>
+
+<h3>Hlásenie?</h1>
+<% if @failed_crz_jobs > 0 %>
+  <p>
+    <%= t :failed_jobs, :count => @failed_crz_jobs, :source => 'CRZ' %>
+  </p>
+<% end -%>
+
+<% if @failed_egov_jobs > 0 %>
+  <p>
+    <%= t :failed_jobs, :count => @failed_egov_jobs, :source => 'egov' %>
+  </p>
+<% end -%>
+
+</body>
+</html>

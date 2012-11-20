@@ -6,5 +6,5 @@
     per_page:      number of items to fetch per page
     remote:        data-remote
 -%>
-<%= link_to_unless current_page.last?, "", url, :rel => 'next', :remote => remote, :class => :pnext %>
+<%= link_to_unless current_page.last?, "", url.gsub(".rss",""), :rel => 'next', :remote => remote, :class => :pnext %>
 

@@ -3,19 +3,27 @@
 <div id="comments">
   <%= render @document.comments %>
   <div class="new-comment">
-    <div class="avatar">
-      <%= image_tag gravatar_url(current_user), :size => '60x60', :alt => 'avatar' %>
-    </div>
-    <div class="comment">
-      <div class="in-reply-to"></div>
-      <%= form_for :comment, :url => document_comments_path(@document) do |f| %>
-        <%= f.hidden_field :reply_to %>
-        <%= f.text_area :comment, :cols => 50, :rows => 100 %>
-        <%= recaptcha_tags if !current_user || current_user.guest? %>
-        <%= f.submit 'Pridať príspevok' %>
-        <div class="ajax-loader"></div>
-      <% end %>
-    </div>
+    <% if can? :comment, @document %>
+      <div class="avatar">
+        <%= image_tag gravatar_url(current_user), :size => '60x60', :alt => 'avatar' %>
+      </div>
+      <div class="comment">
+        <div class="in-reply-to"></div>
+        <%= form_for :comment, :url => document_comments_path(@document) do |f| %>
+          <%= f.hidden_field :reply_to %>
+          <%= f.text_area :comment, :cols => 50, :rows => 100 %>
+          <%= f.submit 'Pridať príspevok', :class => 'button' %>
+          <div class="ajax-loader"></div>
+        <% end %>
+      </div>
+    <% else -%>
+      <div class="avatar">
+        <%= image_tag gravatar_url(current_user), :size => '60x60', :alt => 'avatar' %>
+      </div>
+      <div class="comment">
+        Komentovať môžu len prihlásení používatelia.
+      </div>
+    <% end -%>
     <div class="clear"></div>
   </div>
 </div>

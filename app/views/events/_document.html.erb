@@ -1,0 +1,13 @@
+<h2><%= link_to document.name, document_path(document) %></h2>
+<% unless @watched_documents.notice_for(document).blank? %>
+    <h3 class="notice" title="Moja poznámka k zmluve"><%= @watched_documents.notice_for(document) %></h3>
+<% end %>
+<div class="price">
+  <% if document.total_amount %><%= number_to_euro(document.total_amount) %><% else %>neznáma<% end %>
+</div>
+<div class="controls">
+  <%= render 'dashboard/watch', document: document %>
+</div>
+<p><strong>Obstarávateľ:</strong> <%= document.customer %></p>
+<p><strong>Dodávateľ:</strong> <%= document.supplier %></p>
+<p><strong>Dátum zverejnenia:</strong> <%= format_date_or_unknown(document.published_on) %></p>

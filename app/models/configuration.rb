@@ -17,8 +17,12 @@ class Configuration < Settingslogic
   end
   memoize :normalize_points_to
 
-  def facets
-    [
+  def self.comment_flags_notify_threshold
+    SpaceshipSetting.where(:identifier => :flagged_comment_threshold).pluck(:value).first || 3
+  end
+
+  def facets(user_id)
+    all_facets = [
         Factic::FulltextFacet.new(:q),
         Factic::SearchableTermsFacet.new(:supplier),
         Factic::SearchableTermsFacet.new(:department),
@@ -40,13 +44,15 @@ class Configuration < Settingslogic
         Factic::SearchableTermsFacet.new(:source),
         Factic::StatisticalFacet.new(:total_amount)
     ]
+    all_facets << Factic::ArrayFacet.new(:scope, user_id) if user_id
+    all_facets
   end
 
-  def factic
+  def factic(user_id)
     Factic.new(
         documents_repository,
-        :facets => facets,
-        :fields => [:id, :name, :department, :total_amount, :supplier, :customer, :published_on, :points, "matching_heuristics.name", "matching_heuristics.serialized_search_parameters"],
+        :facets => facets(user_id),
+        :fields => [:id, :name, :department, :total_amount, :supplier, :customer, :published_on, :points, :matching_heuristics],
         :sort_fields => [:published_on, :total_amount, :points],
         :highlight => {
             :name => {:number_of_fragments => 0},

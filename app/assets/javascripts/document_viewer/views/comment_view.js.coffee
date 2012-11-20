@@ -37,7 +37,7 @@ class window.CommentView extends Backbone.View
           <label>Poznámka</label>
           <textarea rows="" cols="" name="note"></textarea>
           <div class="buttons2">
-            <input type="submit" value="Pridať poznámku" class="submit">
+            <input type="submit" value="Pridať poznámku" class="submit button">
             <a href="#" class="cancel">Zrušiť</a>
           </div>
         </form>

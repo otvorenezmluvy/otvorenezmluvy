@@ -1,0 +1,63 @@
+<div style="clear: both;"></div>
+<h1 class="page-title">Moje zmluvy</h1>
+<div id="content" class="dashboard">
+  <div id="top">
+    <div id="menu" class="glow">
+      <h2>Posledné zmeny</h2>
+      <%= form_tag filter_dashboard_path, class: 'dashboard' do %>
+          <p><%= check_box_tag 'filters[show_openings]', 1, @filters[:show_openings] %><%= label_tag 'filters[show_openings]', 'Otvorenie sledovaných zmlúv' %></p>
+
+          <p><%= check_box_tag 'filters[show_watching]', 1, @filters[:show_watching] %><%= label_tag 'filters[show_watching]', 'Sledovanie zmlúv' %></p>
+
+          <p><%= check_box_tag 'filters[show_my_comments]', 1, @filters[:show_my_comments] %><%= label_tag 'filters[show_my_comments]', 'Moje komentáre' %></p>
+
+          <p><%= check_box_tag 'filters[show_other_comments]', 1, @filters[:show_other_comments] %><%= label_tag 'filters[show_other_comments]', 'Cudzie komentáre' %></p>
+
+          <p><%= check_box_tag 'filters[show_answers]', 1, @filters[:show_answers] %><%= label_tag 'filters[show_answers]', 'Zodpovedanie otázok' %></p>
+      <% end %>
+    </div>
+    <div class="top-right glow">
+      <div class="header">
+        <h1>Zoznam posledných zmien</h1>
+        <%= form_tag dashboard_path, class: :per_page, method: :get do %>
+            <%= label_tag :per_page, 'Načítať po' %>
+            <%= select_tag :per_page, options_for_select([['5 záznamoch', 5], ['10 záznamoch', 10], ['25 záznamoch', 25], ['50 záznamoch', 50]], @per_page) %>
+        <% end %>
+      </div>
+      <div class="inner">
+        <% if @events.any? %>
+            <%
+               grouped_events = []
+               current_group = []
+               current_aggregate = @events.first.aggregate_parent # TODO what if empty?
+               @events.each do |event|
+                 if current_aggregate == event.aggregate_parent
+                   current_group << event
+                 else
+                   grouped_events << current_group
+                   current_group = [event]
+                   current_aggregate = event.aggregate_parent
+                 end
+               end
+               grouped_events << current_group unless current_group.empty?
+            %>
+            <% grouped_events.each do |group| %>
+                <div class="events-group">
+                  <% first_event = group.first %>
+                  <% if first_event.aggregate_parent %>
+                      <%= render partial: "events/#{first_event.aggregate_parent_type}", object: first_event.aggregate_parent %>
+                  <% end %>
+                  <%= render partial: group, as: :event %>
+                </div>
+            <% end %>
+        <% end %>
+      </div>
+      <% if @events.total_pages > @page %>
+          <div class="footer">
+            <p><%= link_to 'Zobraziť staršie záznamy', dashboard_path(page: @page + 1) %></p>
+          </div>
+      <% end %>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>

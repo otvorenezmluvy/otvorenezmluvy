@@ -1,0 +1,2 @@
+class WatchingStartedEvent < DocumentEvent
+end

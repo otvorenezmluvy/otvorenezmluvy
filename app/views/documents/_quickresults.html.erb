@@ -5,9 +5,9 @@
       <dl class="quickresults">
         <% @matching_pages.each_with_index do |matching_page, index| %>
           <dd>
-            <strong><%= link_to "#{matching_page.attachment.number}/#{matching_page.number}", document_page_path(matching_page, :q => @query) + "#" + document_page_anchor(matching_page), :title => "Prejsť na stranu č.#{matching_page.number}" %></strong>
+            <strong><%= link_to "str. #{matching_page.number}", document_path(@document, :q => @query, anchor: document_page_anchor(matching_page)), :title => "Prejsť na stranu č.#{matching_page.number}" %></strong>
             <% matching_page.highlights('text').each do |highlight| %>
-              <%= link_to raw(highlight), document_page_path(matching_page, :q => @query) + "#" + document_page_anchor(matching_page), :class => 'snippet' %>
+              <%= link_to raw(highlight), document_path(@document, :q => @query, anchor: document_page_anchor(matching_page)), class: :snippet %>
             <% end %>
           </dd>
         <% end %>

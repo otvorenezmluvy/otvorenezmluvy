@@ -1,10 +1,10 @@
+# encoding: utf-8
 class ApplicationController < ActionController::Base
   extend ActiveSupport::Memoizable
 
   protect_from_forgery
 
   before_filter :check_ip_ban
-  before_filter :authenticate
   before_filter :set_body_class
   before_filter :remember_current_path, :unless => :devise_controller?
 
@@ -14,13 +14,6 @@ class ApplicationController < ActionController::Base
   end
 
   protected
-  def authenticate
-    return unless Rails.env.production?
-    authenticate_or_request_with_http_basic do |username, password|
-      username == "tis" && password == "afp"
-    end
-  end
-
   def remember_current_path
     session[:return_to] = request.env['PATH_INFO']
   end
@@ -44,7 +37,7 @@ class ApplicationController < ActionController::Base
   end
 
   def factic
-    ::Configuration.factic
+    ::Configuration.factic(current_user.try(:id))
   end
 
   # if user is logged in, return current_user, else return guest_user
@@ -52,7 +45,6 @@ class ApplicationController < ActionController::Base
     if current_user
       if session[:guest_user_id]
         logging_in
-        guest_user.destroy
         session[:guest_user_id] = nil
       end
       current_user
@@ -62,9 +54,8 @@ class ApplicationController < ActionController::Base
   end
 
   def guest_user
-    u = User.find(session[:guest_user_id].nil? ? session[:guest_user_id] = create_guest_user.id : session[:guest_user_id])
-    u.update_tracked_fields!(request)
-    u
+    session[:guest_user_id] = "#{Time.now.to_i}#{rand(99)}".to_i if session[:guest_user_id].nil?
+    OpenStruct.new(:id => session[:guest_user_id], :name => "guest_#{session[:guest_user_id]}", :email => "guest_#{session[:guest_user_id]}@email.com", :guest => true)
   end
   memoize :guest_user
 
@@ -75,11 +66,6 @@ class ApplicationController < ActionController::Base
   end
 
   private
-
-  def create_guest_user
-    name = "#{Time.now.to_i}#{rand(99)}"
-    u = User.create(:name => "guest_#{name}", :email => "guest_#{name}@email.com", :password => "CrowdCloudGuestUser123", :guest => true)
-  end
 
   def set_body_class
     @body_class = "detail devise" if devise_controller?

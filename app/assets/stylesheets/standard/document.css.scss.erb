@@ -26,6 +26,7 @@
           float: none;
           text-align: right;
           width: 155px;
+          vertical-align: top;
 
           .label {
             padding-bottom: 1px;
@@ -37,6 +38,11 @@
         font-size: 18px;
         color: #2e3237;
         font-weight: bold;
+
+        p {
+          float: left;
+          width: 95%;
+        }
       }
     }
     .soc-siete {
@@ -51,7 +57,7 @@
           line-height: 26px;
           color: #333;
           background: url(<%= asset_path "diskutovat-button.png" %>) no-repeat center center;
-          text-indent: 25px;
+          text-indent: 30px;
           display: block;
           height: 26px;
           width: 100px;
@@ -83,6 +89,34 @@
 
     .share.first-button {
       margin-bottom: 50px;
+    }
+
+    .sledovat {
+      .watched, .unwatched {
+        float: none;
+        margin-top: 6px;
+        height: 26px;
+        line-height: 26px;
+        width: 100px;
+        color: #333;
+        font-size: 12px;
+        text-indent: 30px;
+        margin-bottom: 14px;
+      }
+
+      .unwatched {
+        background: url(<%= asset_path "sledovat-button.png" %>) no-repeat;
+      }
+
+      .watched {
+        background: url(<%= asset_path "sledovat-button.png" %>) scroll 0 -26px no-repeat;
+        color: #fff;
+      }
+
+      .small_box {
+        margin-top: -20px;
+        z-index: 1;
+      }
     }
   }
 
@@ -159,8 +193,8 @@
 
 #content > .back-to-search {
   width: 200px;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 12px;
+  padding-bottom: 11px;
   background: #eef2f6;
   border-top: 1px solid #CDD3D9;
   border-left: 1px solid #CDD3D9;

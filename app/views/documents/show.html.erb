@@ -1,3 +1,16 @@
+<script type="text/javascript">
+    window.___gcfg = {lang: 'sk'};
+
+    (function() {
+        var po = document.createElement('script');
+        po.type = 'text/javascript';
+        po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(po, s);
+    })();
+</script>
+
 <div id="content" class="nahlad">
   <div class="back-to-search">
     <% @last_search_params["_positional_args"] = nil %>
@@ -8,7 +21,9 @@
       <table>
         <tr>
           <td class="table-box-left">Názov</td>
-          <td class="name"><%= @document.name || "Dokument bez uvedeného názvu" %></td>
+          <td class="name">
+            <p><%= @document.name || "Dokument bez uvedeného názvu" %></p>
+          </td>
         </tr>
         <% if @document.appendix? && @document.parent_contract %>
           <tr>
@@ -78,11 +93,14 @@
       </table>
       <div class="soc-siete">
         <div class="share first-button">
+          <div class="sledovat">
+            <%= render 'dashboard/watch', document: @document %>
+          </div>
           <div class="diskutovat">
-            <a href="#diskusia" class="button">Diskutovať</a>
+            <a href="#diskusia">Diskutovať</a>
 
             <div>
-              <span></span><%= @document.comments.length %>
+              <span></span><%= @document.comments_count %>
             </div>
           </div>
         </div>
@@ -90,7 +108,9 @@
           <iframe src="http://www.facebook.com/plugins/like.php?app_id=230620916983801&amp;href=<%= document_url(@document) %>&amp;send=false&amp;layout=button_count&amp;width=90&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=arial&amp;height=21&amp;locale=sk_SK" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px;" allowTransparency="true"></iframe>
         </div>
         <div class="share">
-          <a href="http://twitter.com/share" class="twitter-share-button" data-url="<%= document_url(@document) %>" data-count="horizontal">Tweet</a>
+          <iframe allowtransparency="true" frameborder="0" scrolling="no"
+            src="//platform.twitter.com/widgets/tweet_button.html"
+            style="width:130px; height:20px;"></iframe>
         </div>
         <div class="share">
           <div class="g-plusone" data-size="medium" href="<%= document_url(@document) %>"></div>
@@ -119,6 +139,7 @@
             <a href="" class="scan _dv_document_scan">Scan</a>
             <a href="" class="fulltext _dv_document_fulltext">Fulltext</a>
             <a href="" class="add_note _dv_add_comment">Komentovať pasáž</a>
+            <span class="instructions">Myšou označte problémovú časť zmluvy</span>
           </div>
           <%= render 'page_navigation' %>
 
@@ -128,9 +149,11 @@
         </div>
       </div>
       <div class="top-left">
-        <div class="module module-quickresults">
-          <%= render :partial => 'quickresults' %>
-        </div>
+        <% if @matching_pages.any? %>
+            <div class="module module-quickresults">
+              <%= render :partial => 'quickresults' %>
+            </div>
+        <% end %>
         <div class="module hodnotenie last">
           <h3>Ohodnoťte túto zmluvu</h3>
           <%= render @visible_questions %>

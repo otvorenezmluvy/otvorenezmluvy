@@ -16,6 +16,7 @@ class window.DocumentControlView extends Backbone.View
     @scanButton = $('._dv_document_scan')
     @fulltextButton = $('._dv_document_fulltext')
     @commentButton = $('._dv_add_comment')
+    @instructions = $('.instructions')
 
   showScan: ->
     @editor.showScan()
@@ -40,8 +41,13 @@ class window.DocumentControlView extends Backbone.View
       @commentButton.show()
 
   updateDocumentMode: ->
-    @commentButton.addClass("selected") if @editor.getMode() is "comment"
-    @commentButton.removeClass("selected") if @editor.getMode() is "view"
+    if @editor.getMode() is "comment"
+      @commentButton.addClass("selected")
+      @instructions.show()
+
+    if @editor.getMode() is "view"
+      @commentButton.removeClass("selected")
+      @instructions.hide()
 
   documentSwitched: ->
     @disableOrEnableCommentingButton()

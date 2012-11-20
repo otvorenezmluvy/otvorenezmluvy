@@ -5,7 +5,7 @@ class Attachment < ActiveRecord::Base
   include Document::Archivable
 
   belongs_to :document
-  has_many :pages, :order => :number
+  has_many :pages, :order => :number, :dependent => :destroy
 
   def path_to_pages(options = {})
     "#{path_to_hardcopy(:directory, options)}/pages"

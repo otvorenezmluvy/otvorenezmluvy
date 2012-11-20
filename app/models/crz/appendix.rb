@@ -1,4 +1,6 @@
 class Crz::Appendix < Crz::Document
+  attr_accessible :contract_crz_id
+
   def self.find_all_by_contract_crz_id(crz_id)
     joins(:crz_document_detail).where(:crz_document_details => {:contract_crz_id => crz_id})
   end

@@ -1,3 +1,5 @@
+require 'base_name'
+
 module Crz
   module Jobs
     class DownloadDocument
@@ -14,6 +16,7 @@ module Crz
           extract_text(attachment)
           extract_images(attachment)
           attachment.delete_original
+          attachment.delete_text
         end
 
         document.appendix_connections.each do |appendix|
@@ -30,22 +33,39 @@ module Crz
       end
 
       def self.extract_text(attachment)
-        source_pdf = attachment.path_to_hardcopy(:text)
+        pdfs = [attachment.path_to_hardcopy(:text), attachment.path_to_hardcopy(:original)]
         target_path = attachment.path_to_pages
-        Docsplit.extract_text(source_pdf, :output => target_path, :ocr => false, :clean => false, :pages => 'all')
-        Dir["#{target_path}/*.txt"].sort.each do |entry|
-          page_number = entry[/_([0-9]+)\.txt/, 1].try(:to_i)
-          if page_number
-            text = File.read(entry)
-            attachment.pages.build(:text => text, :number => page_number)
+        try_extraction(pdfs) do |source_pdf|
+          Docsplit.extract_text(source_pdf, :output => target_path, :clean => true, :pages => 'all', :language => 'ces')
+          Dir["#{target_path}/*.txt"].sort.each do |entry|
+            page_number = entry[/_([0-9]+)\.txt/, 1].try(:to_i)
+            if page_number
+              text = File.read(entry)
+              attachment.pages.build(:text => text, :number => page_number)
+            end
           end
+          attachment.base_text_name = BaseName.extract(source_pdf)
         end
       end
 
       def self.extract_images(attachment)
-        source_pdf = attachment.path_to_hardcopy(:original)
+        pdfs = [attachment.path_to_hardcopy(:original), attachment.path_to_hardcopy(:text)]
         target_path = File.join(attachment.path_to_pages_images, '1000x')
-        Docsplit.extract_images(source_pdf, :size => ['1000x'], :rolling => true, :output => target_path, :format => :gif)
+        try_extraction(pdfs) do |source_pdf|
+          Docsplit.extract_images(source_pdf, :size => ['1000x'], :rolling => true, :output => target_path, :format => :gif)
+          attachment.base_image_name = BaseName.extract(source_pdf)
+        end
+      end
+
+      private
+      def self.try_extraction(pdfs, &block)
+        begin
+          source_pdf = pdfs.shift
+          block.call(source_pdf)
+          return
+        rescue Docsplit::ExtractionFailed
+          retry unless pdfs.empty?
+        end
       end
     end
   end

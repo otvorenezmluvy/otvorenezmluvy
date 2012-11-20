@@ -1,0 +1,17 @@
+<div id="top" class="glow empty">
+  <div class="top-left" id="facets" data-url=<%= url_for(toggle_visibility_documents_path) %>>
+    <h1>Naposledy hľadané</h1>
+    <ul>
+      <li><%= link_to 'Ministerstvo zahraničných vecí', search_documents_path(:q => 'Ministerstvo zahraničných vecí') %></li>
+      <li><%= link_to 'Ministerstvo školstva', search_documents_path(:q => 'Ministerstvo školstva') %></li>
+      <li><%= link_to 'Ministerstvo kultúry', search_documents_path(:q => 'Ministerstvo kultúry') %></li>
+      <li><%= link_to 'Iveta Radičová', search_documents_path(:q => 'Iveta Radičová') %></li>
+      <li><%= link_to 'Róbert Fico', search_documents_path(:q => 'Róbert Fico') %></li>
+    </ul>
+  </div>
+  <div class="top-right">
+    <p>Nenašli sme žiadne výsledky.</p>
+    <p>Skúste upraviť kritériá vyhľadávania.</p>
+  </div>
+  <div class="clear"></div>
+</div>

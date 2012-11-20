@@ -1,7 +1,9 @@
 class Crz::Attachment < Attachment
-  has_one :crz_attachment_detail, :class_name => 'Crz::AttachmentDetail', :dependent => :destroy
+  has_one :crz_attachment_detail, :class_name => 'Crz::AttachmentDetail', :dependent => :destroy, :autosave => true
   delegate :crz_doc_id, :crz_doc_id=, :crz_text_id, :crz_text_id=,
-           :note, :note=, :to => :lazy_detail
+           :note, :note=, :base_text_name, :base_text_name=, :base_image_name,
+           :base_image_name=, :to => :lazy_detail
+  attr_accessible :crz_doc_id, :number, :name, :text
 
   def self.find_or_initialize_by_crz_id(crz_id)
     attachment = joins(:crz_attachment_detail).where(:crz_attachment_details => {:crz_doc_id => crz_id}).first
@@ -26,8 +28,8 @@ class Crz::Attachment < Attachment
 
   def base_page_name(type)
     case type
-      when :image then crz_doc_id
-      when :text  then "#{crz_doc_id}-text"
+      when :image then base_image_name
+      when :text  then base_text_name
     end
   end
 

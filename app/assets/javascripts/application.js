@@ -3,11 +3,16 @@
 // be included in the compiled file accessible from http://example.com/assets/application.js
 // It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
 // the compiled file.
-//
+
 //= require jquery_ujs
 //= require_tree ./vendor
 //= require document_viewer/dv
-//= require_tree .
+//= require_tree ./public
+
+function highlightComment() {
+    $('.comment-top.highlight').removeClass('highlight');
+    $(location.hash).children('.comment-top:first').addClass('highlight');
+}
 
 
 $().ready(function() {
@@ -25,15 +30,8 @@ $().ready(function() {
             }});
     });
 
+    highlightComment();
+    $(window).bind('hashchange', highlightComment);
+
     $('.jqtransform').jqTransform();
 });
-
-//$().ready(function() {
-//  $("#slider").easySlider({
-//    speed: 800,
-//    auto: true,
-//    pause: 8000,
-//    continuous: true,
-//    numeric: true
-//  });
-//});

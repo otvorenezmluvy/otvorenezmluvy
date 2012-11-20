@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Crz
   module Parsers
     class DocumentParser
@@ -10,37 +11,37 @@ module Crz
         document.crz_id = doc.css(".links a[class='print']").first["href"][/[0-9]+/].to_i
 
         doc.css(".b_right table tr").each do |row|
-          value = row.css("td").first.text
+          value = row.css("td").first
           case row.css("th").first.text
-            when "Č. zmluvy:", "Číslo dodatku:" :
-              document.identifier = value
-            when "Rezort:" :
-              document.department = value
-            when "Objednávateľ:", "Obstarávateľ:" :
-              document.customer = value
-            when "Dodávateľ:" :
-              document.supplier = value
-            when "IČO:" :
-              document.supplier_ico = value.gsub(' ', '').to_i
-            when "Názov zmluvy:", "Názov dodatku:" :
-              document.name = value.squish
+            when "Č. zmluvy:", "Číslo dodatku:", "Číslo zmluvy:"
+              document.identifier = value.text
+            when "Rezort:"
+              document.department = value.text
+            when "Objednávateľ:", "Obstarávateľ:"
+              document.customer = value.children.first.text
+            when "Dodávateľ:"
+              document.supplier = value.children.first.text
+            when "IČO:"
+              document.supplier_ico = value.text.gsub(' ', '').to_i
+            when "Názov zmluvy:", "Názov dodatku:"
+              document.name = value.text.squish
             when "Poznámka:"
-              document.note = value
+              document.note = value.text
             when "Stav:"
-              document.status = value
+              document.status = value.text
           end
         end
 
         doc.css(".area1 table tr").each do |row|
           value = row.css("td").first.text
           case row.css("th").first.text
-            when "Suma na zmluve:" :
+            when "Suma na zmluve:"
               document.contracted_amount = value[/[0-9 ]+/].gsub(' ', '').to_i
-            when "Dátum zverejnenia:" :
+            when "Dátum zverejnenia:"
               document.published_on = parse_date(value)
-            when "Dátum účinnosti:" :
+            when "Dátum účinnosti:"
               document.effective_from = parse_date(value)
-            when "Dátum platnosti do:" :
+            when "Dátum platnosti do:"
               document.expires_on = parse_date(value)
           end
         end

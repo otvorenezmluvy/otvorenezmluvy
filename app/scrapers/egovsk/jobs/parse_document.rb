@@ -5,9 +5,12 @@ module Egovsk
       @queue = :egovsk_documents
 
       def self.perform(record, customer_name, customer_founder)
-        doc = Egovsk::Parsers::JSONParser.parse(record)
+        existing_doc = Egovsk::Document.find_all_by_egovsk_id(record["id_zmluvy"].to_i).first
+        doc = Egovsk::Parsers::JSONParser.parse(record, existing_doc)
+
         doc.customer = customer_name
         doc.founder = customer_founder
+
         begin
         doc.attachments.each do |attachment|
           download_attachment(attachment)
@@ -17,7 +20,9 @@ module Egovsk
         rescue StandardError => error
           Rails.logger.error "#{error} while processing #{customer_name.to_s}:#{record["id_zmluvy"].to_s}"
         end
+
         Configuration.documents_repository.save!(doc)
+        doc.attachments.each { |a| a.save! }
       end
 
       private
@@ -28,7 +33,7 @@ module Egovsk
       def self.extract_text(attachment)
         source_document = attachment.path_to_hardcopy(:as_is)
         target_path = attachment.path_to_pages
-        Docsplit.extract_text(source_document, :output => target_path, :ocr => true, :clean => false, :pages => 'all', :language => 'ces')
+        Docsplit.extract_text(source_document, :output => target_path, :clean => true, :pages => 'all', :language => 'ces')
         Dir["#{target_path}/*.txt"].sort.each do |entry|
           page_number = entry[/_([0-9]+)\.txt/, 1].try(:to_i)
           if page_number

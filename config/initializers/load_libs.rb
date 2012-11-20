@@ -1,1 +1,1 @@
-require 'lib/core_ext/recursive_openstruct'
+require 'core_ext/recursive_openstruct'

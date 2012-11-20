@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 class DocumentWithBogusMapping
-  def self.mapping
+  def self.index_settings
     {:mappings => {:page => {:properties => {
         :id => {:type => :int # int is bogus
         }}}}

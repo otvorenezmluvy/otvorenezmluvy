@@ -1,0 +1,4 @@
+prevent double render mixin
+no bind.change, use mediator instead
+modules
+refactor placement logic into separate class

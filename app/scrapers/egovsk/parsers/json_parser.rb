@@ -1,10 +1,14 @@
 module Egovsk
   module Parsers
     class JSONParser
-      def self.parse(record)
+      def self.parse(record, doc = nil)
         is_appendix = record["dodatok"] != "0" || record["vypoved"] != "0"
-        document = is_appendix ? Egovsk::Appendix : Egovsk::Contract
-        doc = document.new
+        if doc
+          doc.attachments.destroy_all
+        else
+          document = is_appendix ? Egovsk::Appendix : Egovsk::Contract
+          doc = document.new
+        end
         doc.customer_id = record["id_institucie"].to_i
         doc.name = record["predmet"]
         doc.egovsk_id = record["id_zmluvy"].to_i

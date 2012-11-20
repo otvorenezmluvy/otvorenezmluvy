@@ -44,13 +44,7 @@ namespace :crowdcloud do
 
   desc "Requeue failed all jobs"
   task "requeue" => :environment do
-    i=0
-    while job = Resque::Failure.all(i)
-      if job['queue'] == "crz_attachments"
-        Resque::Failure.requeue(i)
-      end
-      i+=1
-    end
+    (Resque::Failure.count-1).downto(0).each { |i| Resque::Failure.requeue(i) }
     Resque::Failure.clear
   end
 
@@ -67,5 +61,10 @@ namespace :crowdcloud do
     Heuristic.all.each do |heuristic|
       Resque.enqueue(Heuristic::Jobs::AddHeuristicToMatchingDocuments, heuristic.id, heuristic.create_search(::Configuration.factic).build_query)
     end
+  end
+
+  desc "Send notification if there are failed jobs"
+  task "notifications:failed_jobs" => :environment do
+    FailedJobsNotifier.send_notification_if_there_are_failed_jobs
   end
 end

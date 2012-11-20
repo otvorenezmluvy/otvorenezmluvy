@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Crz
   module Jobs
     class DownloadAttachment

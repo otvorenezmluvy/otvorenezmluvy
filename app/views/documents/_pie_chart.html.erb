@@ -36,7 +36,7 @@
       },
       tooltip: {
         formatter: function() {
-          return '<b>' + this.point.name +'</b>: ' + this.percentage + ' %';
+          return '<b>' + this.point.name +'</b>: ' + Math.round(this.percentage) + ' %';
         }
       },
       plotOptions: {
@@ -60,7 +60,7 @@
       <% sum + (n.total.to_i) %>
     <% end %>
     <% @statistics.amounts_by_department.terms.each do |department| %>
-      options.series[0].data.push(["<%= department.term %>" , <%= department.total.to_i * 100/(total) %>]);
+      options.series[0].data.push(["<%= truncate(shorten_department(department.term), :length => 40) %>" , <%= department.total * 100/(total) %>]);
     <% end %>
     chart = new Highcharts.Chart(options);
   });

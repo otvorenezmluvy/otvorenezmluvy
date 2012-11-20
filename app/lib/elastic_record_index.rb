@@ -14,9 +14,16 @@ class ElasticRecordIndex
 
   def recreate
     delete_index
-    response = Curl::Easy.http_put(index_url, @document_class.mapping.to_json)
+    response = Curl::Easy.http_put(index_url, encode_json(@document_class.index_settings))
     raise Exception.new(response.body_str) unless response.response_code == 200
     reregister_heuristics
+  end
+
+  def remap
+    @document_class.mapping.each do |type, mapping|
+      url = [@url, @index_name, type, :_mapping].join('/')
+      Curl::Easy.http_put(url, encode_json({type: mapping}))
+    end
   end
 
   def flush
@@ -24,7 +31,7 @@ class ElasticRecordIndex
   end
 
   def index(document)
-    response = Curl::Easy.http_post(type_url(document.id), document.to_indexable.to_json)
+    response = Curl::Easy.http_post(type_url(document.id), encode_json(document.to_indexable))
     raise Exception.new(response.body_str) if response.response_code == 500
   end
 
@@ -34,7 +41,7 @@ class ElasticRecordIndex
   end
 
   def search(query)
-    response = Curl::Easy.http_post(type_url("_search"), query.to_json)
+    response = Curl::Easy.http_post(type_url("_search"), encode_json(query))
     return parse_search_response(response.body_str) if response.response_code == 200
     raise Exception.new(response.body_str)
   end
@@ -53,7 +60,7 @@ class ElasticRecordIndex
   end
 
   def register_percolator(identifier, query)
-    Curl::Easy.http_put(percolator_url(identifier), query.to_json)
+    Curl::Easy.http_put(percolator_url(identifier), encode_json(query))
   end
 
   def has_percolator?(identifier)
@@ -65,7 +72,7 @@ class ElasticRecordIndex
   end
 
   def percolate(document)
-    response = Curl::Easy.http_post(type_url(:_percolate), {:doc => document.to_indexable}.to_json).body_str
+    response = Curl::Easy.http_post(type_url(:_percolate), encode_json({:doc => document.to_indexable})).body_str
     parse_response(response).matches
   end
 
@@ -89,17 +96,21 @@ class ElasticRecordIndex
   end
 
   def reindex_all(includes = nil)
-    # TODO bulk?
     scope = includes ? @document_class.includes(includes) : @document_class
-    scope.find_each do |doc|
-      index(doc)
+    scope.find_in_batches do |batch|
+      operations = ''
+      batch.each do |document|
+        operations += encode_json({index: {_index: @index_name, _type: index_type, _id: document.id}}) + "\n"
+        operations += encode_json(document.to_indexable) + "\n"
+      end
+      Curl::Easy.http_post("#{@url}/_bulk", operations)
     end
   end
 
   private
   def reregister_heuristics
     Heuristic.all.each do |heuristic|
-      heuristic.register(self, ::Configuration.factic)
+      heuristic.register(self, ::Configuration.factic(nil))
     end
   end
 
@@ -109,7 +120,7 @@ class ElasticRecordIndex
   end
 
   def initiate_scroll(query, timeout = "5m")
-    response = Curl::Easy.http_post(type_url("_search?scroll=#{timeout}"), query.to_json).body_str
+    response = Curl::Easy.http_post(type_url("_search?scroll=#{timeout}"), encode_json(query)).body_str
     parse_search_response(response)
   end
 
@@ -144,7 +155,11 @@ class ElasticRecordIndex
   end
 
   def parse_response(response)
-    ActiveSupport::JSON.decode(response).to_openstruct
+    MultiJson.load(response).to_openstruct
+  end
+
+  def encode_json(data)
+    MultiJson.dump(data)
   end
 
   class Results
@@ -169,7 +184,7 @@ class ElasticRecordIndex
     include Document::NormalizedPoints
     include Document::NiceUrl
 
-    undef id
+    undef id if method_defined?(:id)
 
     def initialize(document_class, data)
       @document_class, @data = document_class, data
@@ -199,8 +214,8 @@ class ElasticRecordIndex
     protected
     def get_field(name)
       return @data._id.to_i if name == :id # id is special
-      return @data._source.send(name) if @data._source && @data._source.respond_to?(name)
-      return @data.fields.send(name) if @data.fields && @data.fields.respond_to?(name)
+      return @data._source.send(name) if @data._source && @data._source.respond_to?(name.to_sym)
+      return @data.fields.send(name) if @data.fields && @data.fields.respond_to?(name.to_sym)
       return nil
       raise NoMethodError.new("Field #{name} not loaded into hit, try loading it or use object method to get underlying object", name)
     end

@@ -2,7 +2,7 @@
 <div id="content" class="login">
   <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
     <p><%= f.label :email, 'Email' %>
-    <%= f.email_field :email %></p>
+    <%= f.email_field :email, class: :autofocus %></p>
 
     <p><%= f.label :password, 'Heslo' %>
     <%= f.password_field :password %></p>

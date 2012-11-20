@@ -1,0 +1,10 @@
+<section>
+  <h1>Nastavenia systému</h1>
+  <% @settings.each do |setting| %>
+      <%= form_for [:admin, setting], html: { class: 'form-inline' } do |f| %>
+          <%= setting.label %>
+          <%= f.text_field :value, class: :span1 %>
+          <%= f.submit 'Uložiť', class: :btn %>
+      <% end %>
+  <% end %>
+</section>

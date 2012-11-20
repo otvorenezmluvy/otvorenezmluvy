@@ -1,4 +1,6 @@
 class Crz::Contract < Crz::Document
+  attr_accessible :contracted_amount, :total_amount
+
   has_many :appendix_connections, :foreign_key => :document_id
 
   def appendixes

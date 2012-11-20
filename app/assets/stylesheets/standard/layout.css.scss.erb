@@ -52,10 +52,10 @@
 
 #content {
   padding-top: 40px;
-  min-height: 800px;
   background: url(<%= asset_path 'top_banner.png' %>) center 0 no-repeat;
   text-align: center;
   color: #111;
+  margin-bottom: 20px;
 }
 
 #wrapper {
@@ -114,7 +114,6 @@ body.detail {
 
 #footer-wrapper {
   background: url(<%= asset_path 'footerbg.png' %>) repeat-x;
-  margin-top: 20px;
 
   #footer {
     width: 1000px;
@@ -191,4 +190,28 @@ body.detail {
   a {
     color: #288ECB !important;
   }
+}
+
+$footer-height: 41px;
+
+html, body {
+  height: 100%;
+}
+
+#wrapper {
+  clear: both;
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin-bottom: -$footer-height;
+
+  #root-footer {
+    height: $footer-height;
+  }
+}
+
+#footer-wrapper {
+  clear: both;
+  position: relative;
+  height: $footer-height;
 }

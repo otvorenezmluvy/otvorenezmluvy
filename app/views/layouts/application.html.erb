@@ -1,50 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset='utf-8' />
+  <meta name="description" content="Zverejňovanie zmlúv, ktoré má zmysel" />
+  <meta name="keywords" content="otvorené zmluvy, štátna správa, samosprávy" />
+  <meta name="author" content="minio.sk" />
   <title><%= @title.try(:+, ' | ') %><%= Configuration.site_name %></title>
+  <%= favicon_link_tag %>
   <%= stylesheet_link_tag "application" %>
+
   <%= stylesheet_link_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" %>
   <!--[if IE 7]>
     <%= stylesheet_link_tag "ie7.css" %>
   <![endif]-->
 
-  <%== hoptoad_javascript_notifier %>
-
   <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js" %>
   <%= javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" %>
-
-  <%= javascript_include_tag "http://platform.twitter.com/widgets.js" %>
-  <script type="text/javascript">
-      window.___gcfg = {lang: 'sk'};
-
-      (function() {
-          var po = document.createElement('script');
-          po.type = 'text/javascript';
-          po.async = true;
-          po.src = 'https://apis.google.com/js/plusone.js';
-          var s = document.getElementsByTagName('script')[0];
-          s.parentNode.insertBefore(po, s);
-      })();
-  </script>
   <%= javascript_include_tag "application" %>
 
   <%= csrf_meta_tags %>
 
-  <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-26274643-1']);
-      _gaq.push(['_trackPageview']);
+  <%= render partial: 'shared/google_analytics' %>
 
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-  </script>
    <%= yield :head %>
 </head>
 
-<body <%= body_class %>>
+<body class="<%= @body_class %>">
   <div id="wrapper">
     <% flash.each do |key, msg| %>
       <%= content_tag :div, msg, :class => [key, " message"], :id => "notice_#{key}" %>
@@ -60,16 +41,12 @@
       </div>
       <ul class="menu">
         <% if current_user.try(:admin?) %>
-            <li><%= link_to "Zoznam heuristík", heuristics_path %></li>
-            <li><%= link_to "Zoznam používateľov", users_path %></li>
-            <li><%= link_to "Nastavovanie parametrov", spaceship_settings_path %></li>
-        <% else %>
-          <li><%= link_to("FAQ", static_page_path('faq')) %></li>
-          <li><%= link_to("Podmienky používania", static_page_path('podmienky-pouzivania')) %></li>
-          <li><%= link_to("Kódex diskutujúceho", static_page_path('kodex-diskutujuceho')) %></li>
-          <li><a href="#" class="toggle" data-toggle="rss-toolbar" title="RSS">RSS</a></li>
-          <li><%= link_to("Ako môžem pomôcť", static_page_path('ako-mozem-pomoct')) %></li>
+            <li><%= link_to "Administrácia", admin_comments_path %></li>
         <% end %>
+        <li><%= link_to("O projekte", static_page_path('o-projekte')) %></li>
+        <li><%= link_to("FAQ", static_page_path('faq')) %></li>
+        <li><a href="#" class="toggle" data-toggle="rss-toolbar" title="RSS">RSS</a></li>
+        <li><%= link_to("Ako môžem pomôcť", static_page_path('ako-mozem-pomoct')) %></li>
         <% unless current_user %>
         <li class="nobr">
           <%= link_to("Prihláste sa", new_user_session_path) -%>
@@ -80,7 +57,7 @@
         </li>
         <% else %>
         <li class="nobr logged-user">
-          <%= link_to current_user.label, user_path(current_user) -%>
+          <%= link_to current_user.label, dashboard_path -%>
           <span>&nbsp;</span>
         </li>
         <li class="nobr nopd">
@@ -98,12 +75,14 @@
     </div>
 
     <%= yield %>
+
+    <div id="root-footer"></div>
   </div>
 
   <div id="footer-wrapper">
     <div id="footer">
       <p class="copyright">
-        Copyright &copy; 2011</p>
+        Copyright &copy; 2011-2012</p>
       <ul id="footer-menu">
         <li>
           <%= link_to("Ako môžem pomôcť", static_page_path('ako-mozem-pomoct')) %></li>

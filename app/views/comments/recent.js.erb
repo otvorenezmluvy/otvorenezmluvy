@@ -1,0 +1,2 @@
+$('#tab_recent_comments .contract').last().after("<%= escape_javascript(render partial: 'documents/recent_comments', object: @comments, as: :comments) %>");
+$('#tab_recent_comments .other-contracts a').first().replaceWith("<%= escape_javascript(link_to 'Ukáž ďalšie zmluvy'.html_safe, recent_comments_path(offset: @next_offset), remote: true) %>");

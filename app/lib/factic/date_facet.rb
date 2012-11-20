@@ -63,7 +63,7 @@ class Factic
     end
 
     def create_populated_facet(params, response)
-      ranges = response.facets.send(@field).entries.collect do |entry|
+      ranges = response.facets.send(@field).entries.reverse.collect do |entry|
         first = Time.at(entry.time / 1000).to_date
         range = first..end_of_interval(first)
         actual_params, add_params, remove_params = create_params(range, params)
@@ -103,9 +103,9 @@ class Factic
 
     def end_of_interval(date)
       case @interval
-        when :month :
+        when :month
           date.end_of_month
-        when :year :
+        when :year
           date.end_of_year
       end
     end

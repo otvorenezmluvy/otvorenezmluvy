@@ -1,0 +1,2 @@
+class UserRegisteredEvent < Event
+end

@@ -74,3 +74,15 @@ q.in_appendix = false
 q.question_choices.build(:label => "áno")
 q.question_choices.build(:label => "nie")
 q.save
+
+SpaceshipSetting.create(
+    :identifier => 'recent_min_points',
+    :label => 'Min points',
+    :value => 0
+)
+
+SpaceshipSetting.create(
+    :identifier => 'recent_days',
+    :label => 'Recent days',
+    :value => 7
+)

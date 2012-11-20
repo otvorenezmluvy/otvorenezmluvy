@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111017143625) do
+ActiveRecord::Schema.define(:version => 20121106160631) do
 
   create_table "attachments", :force => true do |t|
     t.integer  "document_id", :null => false
@@ -32,6 +33,16 @@ ActiveRecord::Schema.define(:version => 20111017143625) do
 
   add_index "banned_ips", ["ip"], :name => "index_banned_ips_on_ip", :unique => true
 
+  create_table "comment_reports", :force => true do |t|
+    t.integer  "comment_id", :null => false
+    t.integer  "user_id"
+    t.text     "body",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "comment_reports", ["comment_id"], :name => "index_comment_reports_on_comment_id"
+
   create_table "comments", :force => true do |t|
     t.text     "comment"
     t.text     "area"
@@ -39,15 +50,19 @@ ActiveRecord::Schema.define(:version => 20111017143625) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
-    t.integer  "document_id",                    :null => false
+    t.integer  "document_id",                       :null => false
     t.integer  "parent_id"
-    t.integer  "votes",       :default => 0,     :null => false
-    t.integer  "flags",       :default => 0
-    t.boolean  "mail_sent",   :default => false
+    t.integer  "votes",          :default => 0,     :null => false
+    t.integer  "flags",          :default => 0
+    t.boolean  "mail_sent",      :default => false
+    t.datetime "censored_at"
+    t.integer  "reports_count",  :default => 0,     :null => false
+    t.integer  "censored_by_id"
   end
 
   add_index "comments", ["page_id"], :name => "index_comments_on_page_id"
   add_index "comments", ["parent_id"], :name => "index_comments_on_parent_id"
+  add_index "comments", ["user_id", "created_at"], :name => "user_idx"
 
   create_table "crz_appendix_connections", :force => true do |t|
     t.integer "document_id", :null => false
@@ -57,10 +72,12 @@ ActiveRecord::Schema.define(:version => 20111017143625) do
   add_index "crz_appendix_connections", ["document_id"], :name => "index_crz_appendix_connections_on_document_id"
 
   create_table "crz_attachment_details", :force => true do |t|
-    t.integer "attachment_id", :null => false
+    t.integer "attachment_id",                 :null => false
     t.integer "crz_doc_id"
     t.integer "crz_text_id"
     t.text    "note"
+    t.string  "base_text_name",  :limit => 50
+    t.string  "base_image_name", :limit => 50
   end
 
   add_index "crz_attachment_details", ["crz_doc_id"], :name => "index_crz_attachment_details_on_crz_doc_id", :unique => true
@@ -86,7 +103,33 @@ ActiveRecord::Schema.define(:version => 20111017143625) do
     t.string   "status"
   end
 
+  add_index "crz_document_details", ["contract_crz_id"], :name => "index_crz_document_details_on_contract_crz_id"
   add_index "crz_document_details", ["crz_id"], :name => "index_documents_on_crz_id", :unique => true
+  add_index "crz_document_details", ["document_id"], :name => "index_crz_document_details_on_document_id"
+
+  create_table "deleted_comments", :id => false, :force => true do |t|
+    t.integer  "id"
+    t.text     "comment"
+    t.text     "area"
+    t.integer  "page_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+    t.integer  "document_id"
+    t.integer  "parent_id"
+    t.integer  "votes"
+    t.integer  "flags"
+    t.boolean  "mail_sent"
+  end
+
+  create_table "document_openings", :force => true do |t|
+    t.integer  "document_id", :null => false
+    t.integer  "user_id",     :null => false
+    t.datetime "created_at",  :null => false
+  end
+
+  add_index "document_openings", ["document_id"], :name => "index_document_openings_on_document_id"
+  add_index "document_openings", ["user_id"], :name => "index_document_openings_on_user_id"
 
   create_table "documents", :force => true do |t|
     t.string   "name",       :limit => 1000
@@ -94,6 +137,8 @@ ActiveRecord::Schema.define(:version => 20111017143625) do
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
   end
+
+  add_index "documents", ["created_at"], :name => "index_on_created_at"
 
   create_table "documents_heuristics", :id => false, :force => true do |t|
     t.integer "document_id",  :null => false
@@ -133,7 +178,19 @@ ActiveRecord::Schema.define(:version => 20111017143625) do
   end
 
   add_index "egovsk_document_details", ["customer_id"], :name => "index_egovsk_document_details_on_customer_id"
+  add_index "egovsk_document_details", ["document_id"], :name => "index_egovsk_document_details_on_document_id"
   add_index "egovsk_document_details", ["egovsk_id"], :name => "index_egovsk_document_details_on_egovsk_id", :unique => true
+
+  create_table "events", :force => true do |t|
+    t.integer  "for_user_id",   :null => false
+    t.integer  "external_id"
+    t.string   "external_type"
+    t.string   "type",          :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "events", ["for_user_id", "created_at"], :name => "index_events_on_for_user_id_and_created_at"
 
   create_table "ft_vvo_contracts", :force => true do |t|
     t.string "document_id"
@@ -207,6 +264,10 @@ ActiveRecord::Schema.define(:version => 20111017143625) do
   end
 
   add_index "pages", ["attachment_id"], :name => "index_attachment_pages_on_document_attachment_id"
+  add_index "pages", ["number", "created_at"], :name => "idx"
+  add_index "pages", ["number", "created_at"], :name => "idx2", :order => {"created_at"=>:desc}
+  add_index "pages", ["number", "created_at"], :name => "idx_partial"
+  add_index "pages", ["number"], :name => "idx3"
 
   create_table "procurements", :force => true do |t|
     t.string  "zmluva_hodnota"
@@ -281,13 +342,14 @@ ActiveRecord::Schema.define(:version => 20111017143625) do
   end
 
   create_table "question_answers", :force => true do |t|
-    t.integer  "question_id",        :null => false
-    t.integer  "question_choice_id", :null => false
+    t.integer  "question_id",                     :null => false
+    t.integer  "question_choice_id",              :null => false
     t.text     "detail"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
     t.integer  "document_id"
+    t.integer  "guest_user_id",      :limit => 8
   end
 
   create_table "question_choices", :force => true do |t|
@@ -408,12 +470,12 @@ ActiveRecord::Schema.define(:version => 20111017143625) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "",    :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
+    t.string   "email",                                     :default => "",    :null => false
+    t.string   "encrypted_password",         :limit => 128, :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                         :default => 0
+    t.integer  "sign_in_count",                             :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -422,9 +484,14 @@ ActiveRecord::Schema.define(:version => 20111017143625) do
     t.boolean  "expert"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "name",                                                     :null => false
-    t.boolean  "banned",                                :default => false
-    t.boolean  "guest",                                 :default => false, :null => false
+    t.string   "name",                                                         :null => false
+    t.boolean  "banned",                                    :default => false
+    t.boolean  "stream_show_openings",                      :default => true,  :null => false
+    t.boolean  "stream_show_watching",                      :default => true,  :null => false
+    t.boolean  "stream_show_my_comments",                   :default => true,  :null => false
+    t.boolean  "stream_show_other_comments",                :default => true,  :null => false
+    t.boolean  "stream_show_answers",                       :default => true,  :null => false
+    t.integer  "results_per_page",                          :default => 15,    :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -438,9 +505,21 @@ ActiveRecord::Schema.define(:version => 20111017143625) do
 
   add_index "votings", ["user_id", "comment_id"], :name => "index_votings_on_user_id_and_comment_id"
 
+  create_table "watchlists", :force => true do |t|
+    t.integer  "user_id",     :null => false
+    t.integer  "document_id", :null => false
+    t.string   "notice"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "watchlists", ["user_id", "document_id"], :name => "index_watchlists_on_user_id_and_document_id"
+
   add_foreign_key "attachments", "documents", :name => "attachments_document_id_fk", :dependent => :delete
 
   add_foreign_key "banned_ips", "users", :name => "banned_ips_creator_id_fk", :column => "creator_id"
+
+  add_foreign_key "comments", "users", :name => "comments_censored_by_id_fk", :column => "censored_by_id", :dependent => :nullify
 
   add_foreign_key "crz_appendix_connections", "documents", :name => "crz_appendix_connections_document_id_fk", :dependent => :delete
 

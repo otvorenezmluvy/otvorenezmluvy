@@ -43,7 +43,7 @@ describe Crz::Parsers::ContractParser do
     html = File.read(File.dirname(__FILE__) + '/../fixtures/contract-with-attachments.html')
     contract = Crz::Parsers::ContractParser.parse(html)
     contract.attachments.collect(&:number).should == [1, 2]
-    contract.attachments.collect(&:document_id).should == [172189, 172190]
+    contract.attachments.collect(&:crz_doc_id).should == [172189, 172190]
     contract.attachments.collect(&:name).should == ["Zmluva o poskytovaní, odbere a využívaní spravodajského servisu - 1.28 MB", "Zmluva o poskytovaní, odbere a využívaní spravodajského servisu - 1.28 MB"]
   end
 

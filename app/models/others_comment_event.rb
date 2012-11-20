@@ -1,0 +1,2 @@
+class OthersCommentEvent < CommentEvent
+end

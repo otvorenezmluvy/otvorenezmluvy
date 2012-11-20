@@ -6,7 +6,7 @@ class window.PageView extends Backbone.View
     @editor = options.editor
     @model.bind("change", @render, @)
     @setupStyles()
-    @prepareComments()
+    @resetCommentView()
 
   setupStyles: ->
     $(@el).css(width: '673px', height: '990px', position: 'relative')
@@ -56,7 +56,7 @@ class window.PageView extends Backbone.View
   selectionCanceled: (img) =>
     @newCommentView.hide()
 
-  prepareComments: ->
+  resetCommentView: ->
     @newCommentView = new CommentView(model: new Comment(), parentView: @, page: @model, editor: @editor, onSuccess: @commentCreated)
 
   renderComments: ->
@@ -71,3 +71,4 @@ class window.PageView extends Backbone.View
     @areaSelector.cancelSelection()
     @model.comments.add(comment)
     @editor.setMode("view")
+    @resetCommentView()

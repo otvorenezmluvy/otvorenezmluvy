@@ -1,0 +1,30 @@
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th class="timestamp">Čas komentovania</th>
+    <th class="document">Zmluva</th>
+    <th>Komentár</th>
+    <th class="author">Autor</th>
+    <th class="reports">Oznámenia</th>
+    <th class="actions"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% comments.each do |comment| %>
+      <tr>
+        <td><%= link_to_comment time_ago_in_words(comment.created_at), comment %></td>
+        <td><%= link_to truncate(comment.document.name), document_path(comment.document) %></td>
+        <td><%= simple_format(comment.comment) %></td>
+        <td><% if comment.user %><%= link_to comment.user.name, user_path(comment.user) %><% else  %>anonym<% end %></td>
+        <td><%= pluralize(comment.flags, 'oznámenie', 'oznámení') %>
+          <% if comment.reports_count > 0 %><br><%= link_to pluralize(comment.reports_count, 'dôvod', 'dôvodov'), admin_comment_reports_path(comment) %><% end %>
+        </td>
+        <td>
+          <%= link_to document_path(comment.document, anchor: dom_id(comment)), class: 'btn btn-mini', title: 'Prejsť na komentár' do %>
+             <i class="icon-arrow-right"></i>
+          <% end %>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

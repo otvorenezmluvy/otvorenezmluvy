@@ -1,0 +1,18 @@
+<% if current_user %>
+  <% if @watched_documents.include?(document) %>
+    <% label = "Sledované" %>
+    <% if @watched_documents.notice_for(document) %>
+      <% title = @watched_documents.notice_for(document) %>
+      <% css_class = "watched with_note" %>
+    <% else %>
+      <% title = "Odobrať zmluvu zo sledovaných zmlúv" %>
+      <% css_class = "watched" %>
+    <% end %>
+  <% else %>
+      <% title = "Pridať zmluvu medzi sledované zmluvy" %>
+      <% css_class = "unwatched" %>
+      <% label = "Sledovať" %>
+  <% end %>
+
+  <div class="<%= css_class %>" title="<%= title %>" data-watch-url="<%= watch_document_path(document) %>" data-unwatch-url="<%= unwatch_document_path(document) %>"><%= label %></div>
+<% end %>

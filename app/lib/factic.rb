@@ -10,14 +10,14 @@ class Factic
     params[:page] = params[:page].to_i if params[:page] =~ /[0-9]+/ # TODO move out
     search_params = extract_sanitized_params(params)
     search = create_search(params)
-    response = @repository.search(search)
+    response = @repository.search(search.to_query)
     populate_results(response, params, search_params)
   end
 
   def quickfacet(facet_name, params)
     sanitized_params = extract_sanitized_params(params)
     search = @facets.create_quickfacet_search(facet_name, params)
-    response = @repository.search(search)
+    response = @repository.search(search.to_query)
     populate_quickfacet_results(facet_name, response, sanitized_params)
   end
 
@@ -100,7 +100,7 @@ class Factic
 
     def extract_sanitized_params(params)
       sanitized_params = {}
-      each { |facet| facet.try(:add_sanitized_params, params, sanitized_params) }
+      each { |facet| facet.try(:add_sanitized_params, params, sanitized_params) if facet.respond_to?(:add_sanitized_params) }
       sanitized_params
     end
 
@@ -110,16 +110,16 @@ class Factic
 
     def create_search(params)
       search = Search.new
-      each { |facet| facet.try(:add_restrictions, params, search) }
-      each { |facet| facet.try(:add_facet_definition, params, search) }
+      each { |facet| facet.try(:add_restrictions, params, search) if facet.respond_to?(:add_restrictions) }
+      each { |facet| facet.try(:add_facet_definition, params, search) if facet.respond_to?(:add_facet_definition) }
       search
     end
 
     def create_quickfacet_search(facet_name, params)
       facet = @facets[facet_name]
       search = Search.new
-      each { |f| f.try(:add_restrictions, params, search) }
-      facet.try(:quicksearch, params, search)
+      each { |f| f.try(:add_restrictions, params, search) if f.respond_to?(:add_restrictions) }
+      facet.try(:quicksearch, params, search) if facet.respond_to?(:quicksearch)
       search
     end
 
@@ -154,8 +154,8 @@ class Factic
       @size = 10
     end
 
-    def to_json
-      build_query.to_json
+    def to_query
+      build_query
     end
 
     def to_scrollable
@@ -182,11 +182,11 @@ class Factic
     def build_simple_query
       query = {}
       if @scoring_function
-        query[:query] = { :custom_score => {
-                            :query => @query || {:match_all => {}},
-                            :script => @scoring_function
-                           }
-                        }
+        query[:query] = {:custom_score => {
+            :query => @query || {:match_all => {}},
+            :script => @scoring_function
+        }
+        }
       else
         query[:query] = @query || {:match_all => {}}
       end
@@ -213,6 +213,7 @@ class Factic
     def num_pages
       (hits.total.to_f / per_page).ceil
     end
+    alias :total_pages :num_pages
 
     def limit_value
       per_page

@@ -21,7 +21,7 @@
     <%= hidden_field_tag(:url, document_questions_path(@document), :class => "post-url") %>
     <% if choice_answers %>
       <%= text_area(:question_choice, :detail, :value => choice_answers.first.detail, :class => "question-choice-detail-text") %>
-      <%= button_tag("odoslať", :class => "question-choice-detail-button") %>
+      <%= button_tag("odoslať", :class => "question-choice-detail-button") unless choice_answers.first.detail %>
     <% else %>
       <%= text_area(:question_choice, :detail, :style => "display:none;", :class => "question-choice-detail-text") %>
       <%= button_tag("odoslať", :style => "display:none;", :class => "question-choice-detail-button") %>

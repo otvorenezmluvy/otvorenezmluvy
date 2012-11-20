@@ -1,0 +1,32 @@
+<section>
+  <h1>Heuristiky</h1>
+
+  <p><%= link_to "Späť na vyhľadávanie", search_documents_path %></p>
+
+  <table class="table table-condensed">
+    <thead>
+    <tr>
+      <th>Názov heuristiky</th>
+      <th>Vysvetlenie</th>
+      <th>Počet bodov</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @heuristics.each do |heuristic| %>
+        <tr>
+          <td><%= link_to heuristic.name, search_documents_path(heuristic.search_parameters) %></td>
+          <td><%= heuristic.explanation %></td>
+          <td><%= heuristic.points %></td>
+          <td>
+            <%= link_to [:admin, heuristic], method: :delete, title: "Zmazať heuristiku", confirm: "Chcete naozaj zmazať túto heuristiku?", class: 'btn btn-mini btn-danger' do %>
+                <i class="icon-remove icon-white"></i>
+            <% end %>
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <%= paginate @heuristics %>
+</section>

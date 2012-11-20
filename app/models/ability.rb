@@ -8,11 +8,17 @@ class Ability
     if user.admin?
       can :manage, :all
       can :edit, StaticPage
+      can :toggle, Comment
     else
       can :read, User, :id => user.id
       cannot :read, Heuristic
     end
-    #
+
+    unless user.new_record?
+      can :comment, Document
+      can :view, :dashboard
+    end
+
     # The first argument to `can` is the action you are giving the user permission to do.
     # If you pass :manage it will apply to every action. Other common actions here are
     # :read, :create, :update and :destroy.

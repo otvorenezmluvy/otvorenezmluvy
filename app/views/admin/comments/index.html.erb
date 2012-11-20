@@ -1,0 +1,62 @@
+<section>
+  <h1>Správa komentárov</h1>
+
+  <h2>Posledné komentáre</h2>
+  <% if @latest.any? %>
+    <%= render 'comments', comments: @latest %>
+  <% else %>
+    <p>Žiadne komentára</p>
+  <% end %>
+
+  <h2>Skryté komentáre</h2>
+  <% if @comments.any? %>
+      <%= render 'paginated_comments', comments: @comments %>
+  <% else %>
+      <p>Žiadne cenzúrované komentáre.</p>
+  <% end %>
+
+  <h2>Hlásenia komentárov</h2>
+  <% if @reports.any? %>
+      <table class="table table-condensed table-striped">
+        <thead>
+        <tr>
+          <th class="timestamp">Čas hlásenia</th>
+          <th class="document">Zmluva</th>
+          <th>Komentár</th>
+          <th class="explanation">Zdôvodnenie hlásenia</th>
+          <th class="author">Autor hlásenia</th>
+          <th class="actions"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @reports.each do |report| %>
+            <tr>
+              <td><%= link_to time_ago_in_words(report.created_at), admin_comment_reports_path(report.comment) %></td>
+              <td><%= link_to truncate(report.comment.document.name), document_path(report.comment.document) %></td>
+              <td><%= simple_format(report.comment.comment) %></td>
+              <td><%= simple_format(report.body) %></td>
+              <td>
+                <% if report.user %><%= link_to report.user.name, user_path(report.user) %>
+                <% else %>anonym
+                <% end %></td>
+              <td>
+                <%= link_to document_path(report.comment, anchor: dom_id(report.comment)), class: 'btn btn-mini', title: 'Prejsť na komentár' do %>
+                    <i class="icon-arrow-right"></i>
+                <% end %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+  <% else %>
+      <p>Žiadne hlásenia komentárov.</p>
+  <% end %>
+
+
+  <h2>Najnovšie oznámené komentáre</h2>
+  <% if @suspicious_comments.any? %>
+      <%= render 'paginated_comments', comments: @suspicious_comments %>
+  <% else %>
+      <p>Žiadne oznámené komentáre.</p>
+  <% end %>
+</section>

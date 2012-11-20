@@ -1,7 +1,6 @@
 class CommentsController < ApplicationController
-
-  before_filter :find_document
-  before_filter :find_comment, :except => :create
+  before_filter :find_document, except: :recent
+  before_filter :find_comment, :except => [:create, :recent]
 
   def create
     if params[:area]
@@ -19,7 +18,7 @@ class CommentsController < ApplicationController
 
     new_comment = reply ? reply : @comment
 
-    if !current_user || current_user.guest?
+    if !params[:area] && (!current_user)
       new_comment.save if verify_recaptcha(:model => @comment, :message => I18n.t('recaptcha.errors.verification_failed'))
     else
       new_comment.save
@@ -27,19 +26,32 @@ class CommentsController < ApplicationController
 
     ::Configuration.documents_repository.save(@document) unless new_comment.errors.any?
 
+    if new_comment.persisted?
+      current_user.log_comment_added(new_comment)
+    end
+
     respond_to do |format|
       format.js
       format.html { redirect_to document_path(@document) }
     end
   end
 
-  def destroy
-    @comment.destroy if current_user.admin?
+  def toggle
+    authorize!(:toggle, @comment)
+
+    @comment.toggle(current_user)
 
     respond_to do |format|
       format.js { render :nothing => true }
       format.html { redirect_to document_path(@document) }
     end
+  end
+
+  def report
+    @report = @comment.reports.build(params[:comment_report])
+    @report.user = current_user
+    @report.save!
+    redirect_to document_path(@document)
   end
 
   def vote_up
@@ -51,18 +63,28 @@ class CommentsController < ApplicationController
   end
 
   def flag
+    @comment.flags = @comment.flags + 1
     unless @comment.mail_sent
-      @comment.flags = @comment.flags + 1
-      if @comment.flags == SpaceshipSetting.find_by_identifier("flagged_comment_threshold").value
+      if @comment.flags == ::Configuration.comment_flags_notify_threshold
         @comment.mail_sent = true
         NotificationMailer.flagged_comment_warning(@comment).deliver
       end
-      @comment.save
     end
+    @comment.save
     respond_to do |format|
       format.js { render :json => @comment }
       format.html { redirect_to document_path(@document) }
     end
+  end
+
+  def flag_reason
+    @comment.reports.create!(user: current_user, body: params[:note])
+    render nothing: true
+  end
+
+  def recent
+    @comments = Comment.chronologically.limit(3).offset(params[:offset].to_i)
+    @next_offset = params[:offset].to_i + 3
   end
 
   private
@@ -86,5 +108,4 @@ class CommentsController < ApplicationController
   def find_comment
     @comment = Comment.find(params[:id])
   end
-
 end

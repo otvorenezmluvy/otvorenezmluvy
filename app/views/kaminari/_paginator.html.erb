@@ -9,7 +9,7 @@
 <%= paginator.render do -%>
     <nav class="paging">
       <%= prev_page_tag unless current_page.first? %>
-      <span class="inside-paging">Strana <span class="strong"><%= current_page %></span> z <%= num_pages %></span>
+      <span class="inside-paging">Strana <span class="strong"><%= current_page %></span> z <%= total_pages %></span>
       <%= next_page_tag unless current_page.last? %>
     </nav>
 

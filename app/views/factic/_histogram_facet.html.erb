@@ -2,7 +2,7 @@
   <% histogram_facet.entries.each do |entry| %>
       <%= content_tag :li, entry.selected? ? {:class => :selected} : nil do %>
           <%= link_to "#{number_to_euro(entry.key.begin)} až #{number_to_euro(entry.key.end)}".html_safe, entry.search_params %>
-          (<%= entry.count %>)
+          (<%= format_count(entry.count) %>)
       <% end %>
   <% end %>
 </ul>

@@ -1,0 +1,19 @@
+/*
+ *= require_directory ./admin
+*/
+
+@import "bootstrap";
+
+section {
+  margin-top: 5em;
+}
+
+table {
+  td, th {
+    &.timestamp { width: 120px; }
+    &.document { width: 130px; }
+    &.author { width: 100px; }
+    &.reports { width: 90px; }
+    &.actions { width: 30px; text-align: center; }
+  }
+}

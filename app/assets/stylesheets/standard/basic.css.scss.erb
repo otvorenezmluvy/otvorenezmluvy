@@ -46,6 +46,35 @@ strong {
 
 .heuristic_label {
   background: #eef2f6;
-  padding: 2px 5px;
+  padding: 3px 9px;
   @include border-radius(3px);
+}
+
+a.button {
+  color: #fff;
+}
+
+.button {
+  background: url(<%= asset_path 'buttons.png' %>) repeat-x;
+  height: 48px;
+  line-height: 48px;
+  @include border-radius(2px);
+  display: block;
+  border: 1px solid #1b6899;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 1px 0 #3A79A3;
+
+  &:hover {
+    background: url(<%= asset_path 'buttons.png' %>) repeat-x scroll 0 -48px;
+    text-decoration: none;
+  }
+
+  &:active {
+    background: url(<%= asset_path 'buttons.png' %>) repeat-x scroll 0 -96px;
+    text-decoration: none;
+  }
 }

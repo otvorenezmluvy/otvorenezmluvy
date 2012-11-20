@@ -4,7 +4,7 @@
   <%= link_to "Rozšírené vyhľadávanie", search_documents_path %>
 </div>
 <div id="content">
-  <p class="contracts">Za posledný týždeň pribudli zmluvy v hodnote</p>
+  <p class="contracts">Za posledný mesiac boli zverejnené zmluvy v hodnote</p>
   <div class="top-banner">
     <% offset = @statistics.amounts_from_last_week.total.to_i.to_s.length % 3 %>
     <% @statistics.amounts_from_last_week.total.to_i.to_s.chars.each_with_index do |digit, index| %>
@@ -16,16 +16,21 @@
     <% end %>
     <span>&nbsp;€</span>
     </div>
-  <p>Pomôžte nám ich ohodnotiť.</p>
+    <p class="cta">
+      <%= link_to 'Chcem ich ohodnotiť', search_documents_path, :title => 'Rozšírené vyhľadávanie', :class => 'button' %>
+    </p>
 
   <div class="clear"></div>
 
   <ul id="tabs">
     <li>
-       <%= link_to "Najnovšie zmluvy", "#", :class => "active", 'data-tab-switch' => 'tab_most_recent' %>
+       <%= link_to "Nové zaujímavé zmluvy", "#", :class => "active", 'data-tab-switch' => 'tab_most_recent' %>
     </li>
     <li>
        <%= link_to "Najdiskutovanejšie zmluvy", "#", 'data-tab-switch' => 'tab_most_commented' %>
+    </li>
+    <li>
+       <%= link_to "Posledné komentáre", "#", 'data-tab-switch' => 'tab_recent_comments' %>
     </li>
   </ul>
   <div id="top-index" class="glow">
@@ -33,13 +38,19 @@
       <div id="tab_most_recent" class="tab">
         <%= render :partial => 'document', :collection => @most_recent.hits %>
         <div class="other-contracts">
-          <%= link_to "Ukáž ďalšie zmluvy &darr;".html_safe, search_documents_path(:sort => :published_on) %>
+          <%= link_to "Ukáž ďalšie zmluvy".html_safe, search_documents_path(:sort => :published_on) %>
         </div>
       </div>
       <div id="tab_most_commented" class="tab">
         <%= render :partial => 'document', :collection => @most_commented.hits %>
         <div class="other-contracts">
-          <%= link_to "Ukáž ďalšie zmluvy &darr;".html_safe, search_documents_path(:sort => :comments_count) %>
+          <%= link_to "Ukáž ďalšie zmluvy".html_safe, search_documents_path(:sort => :comments_count) %>
+        </div>
+      </div>
+      <div id="tab_recent_comments" class="tab">
+        <%= render 'recent_comments', comments: @recent_comments %>
+        <div class="other-contracts">
+          <%= link_to "Ukáž ďalšie zmluvy".html_safe, recent_comments_path(offset: 3), remote: true %>
         </div>
       </div>
     </div>
@@ -50,6 +61,6 @@
   </div>
 
   <div class="contracts-footer">
-    Máme pre vás <strong><%= number_with_delimiter(@statistics.all.count) %></strong> zmlúv v hodnote <strong><%= number_to_euro(@statistics.amounts.total) %></strong>, a stále pribúdajú&hellip;
+    Máme pre vás <strong><%= number_with_delimiter(@statistics.all.count) %></strong> zmlúv v hodnote <strong><%= number_to_euro(@statistics.amounts.total) %></strong> a stále pribúdajú&hellip;
   </div>
 </div>
