@@ -72,8 +72,8 @@ Crowdcloud::Application.configure do
       :address => "smtp.gmail.com",
       :port => 587,
       :domain => 'otvorenezmluvy.sk',
-      :user_name => 'otvorenezmluvy@gmail.com',
-      :password => 'otvorenezmluvy123',
+      :user_name => 'blabla',
+      :password => 'blabla',
       :authentication => 'plain',
       :enable_starttls_auto => true
   }
